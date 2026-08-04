@@ -1,0 +1,1467 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Synthorai Chatbot Demo</title>
+<style>
+  :root {
+    color-scheme: dark;
+    --bg: #0f1115; --panel: #171a21; --border: #2a2f3a; --text: #e6e9ef;
+    --muted: #8b93a3; --accent: #5b8cff; --user: #1d2735; --bot: #171f1a;
+    --code: #101319; --warn: #e0a03a; --err: #e07a7a;
+    --ring: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent);
+  }
+  @media (prefers-color-scheme: light) {
+    :root { color-scheme: light;
+            --bg: #f6f7f9; --panel: #fff; --border: #dde1e8; --text: #1a1e26;
+            --muted: #6b7280; --user: #e8eefc; --bot: #eef4ee; --code: #f0f2f6; }
+  }
+  * { box-sizing: border-box; }
+
+  /* Scrollbars: thin, rounded, and invisible until the content needs them.
+     The default bars read as chrome; these read as part of the page. */
+  * { scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px;
+                              border: 2px solid transparent;
+                              background-clip: padding-box; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--muted);
+                                    background-clip: padding-box;
+                                    border: 2px solid transparent; }
+  ::-webkit-scrollbar-corner { background: transparent; }
+  textarea::-webkit-scrollbar { width: 6px; }
+
+  /* One focus treatment for everything typeable. */
+  input:focus-visible, textarea:focus-visible, select:focus-visible {
+    outline: none; border-color: var(--accent); box-shadow: var(--ring); }
+  input[type=checkbox] { accent-color: var(--accent); }
+  body { margin: 0; font: 15px/1.55 system-ui, sans-serif; background: var(--bg);
+         color: var(--text); display: flex; height: 100vh; }
+
+  /* sidebar */
+  /* Three bands: the top and bottom stay put, only the list scrolls. */
+  #side { width: 250px; border-right: 1px solid var(--border);
+          display: flex; flex-direction: column; min-height: 0; }
+  #sideTop { padding: 12px 12px 8px; display: flex; flex-direction: column;
+             gap: 8px; border-bottom: 1px solid var(--border); }
+  #sideBottom { padding: 10px 12px 12px; border-top: 1px solid var(--border);
+                margin-top: auto; }
+  #convList { flex: 1; min-height: 0; overflow-y: auto; padding: 8px 12px; }
+  #side h1 { font-size: 14px; margin: 2px 4px 2px; }
+  #newBtn { padding: 8px; border: 1px solid var(--border); border-radius: 8px;
+            background: var(--panel); color: var(--text); cursor: pointer; }
+  #search { background: var(--panel); color: var(--text); border: 1px solid var(--border);
+            border-radius: 8px; padding: 6px 9px; font: inherit; font-size: 13px; }
+  .convItem { display: flex; align-items: center; gap: 4px; padding: 6px 6px 6px 9px;
+              border-radius: 8px; cursor: pointer; font-size: 13px; }
+  .convItem:hover { background: var(--panel); }
+  .convItem.active { background: var(--panel); outline: 1px solid var(--border); }
+  .convItem .t { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .convItem .act { visibility: hidden; border: none; background: none; cursor: pointer;
+                   color: var(--muted); font-size: 12px; padding: 2px 3px; }
+  .convItem:hover .act, .convItem.active .act { visibility: visible; }
+  .convItem .act:hover { color: var(--text); }
+  #empty { font-size: 12px; color: var(--muted); padding: 6px 9px; }
+  #settingsBtn { width: 100%; font-size: 13px; color: var(--muted);
+                 background: none; border: 1px solid var(--border);
+                 border-radius: 8px; padding: 8px; cursor: pointer; }
+  #settingsBtn:hover { color: var(--text); }
+
+  /* main column */
+  #main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+  #topbar { display: flex; gap: 10px; align-items: center; padding: 10px 14px;
+            border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+  select { background: var(--panel); color: var(--text); border: 1px solid var(--border);
+           border-radius: 8px; padding: 6px 8px; max-width: 190px; }
+  #searchPill { font-size: 11px; color: var(--accent); border: 1px solid var(--accent);
+                border-radius: 999px; padding: 1px 9px; display: none; }
+  #searchPill.on { display: inline-block; }
+
+  /* session stats */
+  #stats { display: flex; gap: 14px; flex-wrap: wrap; align-items: center;
+           padding: 7px 14px; border-bottom: 1px solid var(--border);
+           font-size: 11px; color: var(--muted); cursor: pointer; }
+  #stats .grp { display: flex; gap: 9px; align-items: center; }
+  #stats .lbl { text-transform: uppercase; letter-spacing: .06em; opacity: .7; }
+  #compKey { display: none; }
+  #stats.open #compKey { display: flex; }
+  #statsToggle { margin-left: auto; opacity: .6; }
+  #stats b { color: var(--text); font-weight: 600; }
+  #stats .save { color: var(--accent); }
+  #compBar { display: flex; height: 8px; flex: 1; min-width: 200px;
+             max-width: 420px; border-radius: 4px; overflow: hidden;
+             background: var(--panel); }
+  #compBar span { display: block; height: 100%; transition: width .3s; }
+  #compBar.full { outline: 1px solid var(--warn); }
+  #compKey { display: flex; gap: 10px; flex-wrap: wrap; }
+  #compKey i { font-style: normal; display: inline-flex; align-items: center; gap: 4px; }
+  #compKey i::before { content: ""; width: 8px; height: 8px; border-radius: 2px;
+                       background: currentColor; }
+
+  /* chat */
+  #chat { flex: 1; overflow-y: auto; padding: 18px 14px; display: flex;
+          flex-direction: column; gap: 12px; }
+  .msg { max-width: 76ch; padding: 10px 13px; border-radius: 12px; overflow-wrap: break-word; }
+  .msg.user { background: var(--user); align-self: flex-end; white-space: pre-wrap; }
+  .msg.assistant { background: var(--bot); align-self: flex-start; }
+  .msg.assistant .tail { white-space: pre-wrap; }
+  .msg.assistant.interrupted { border: 1px dashed var(--warn); }
+  .badge { display: inline-block; margin-top: 6px; font-size: 11px; color: var(--warn);
+           border: 1px solid var(--warn); border-radius: 999px; padding: 0 7px; }
+  .meta { font-size: 11px; color: var(--muted); align-self: flex-start; margin: -6px 0 0 4px; }
+  .notice { font-size: 12px; color: var(--muted); align-self: center; text-align: center;
+            border: 1px dashed var(--border); border-radius: 10px; padding: 6px 12px;
+            max-width: 76ch; }
+  .notice.warn { color: var(--warn); border-color: var(--warn); }
+  .notice.err { color: var(--err); border-color: var(--err); }
+  .notice button { margin: 6px 4px 0; font: inherit; font-size: 12px; cursor: pointer;
+                   background: var(--panel); color: var(--text);
+                   border: 1px solid var(--border); border-radius: 7px; padding: 3px 10px; }
+  .actions { align-self: flex-start; margin-top: -4px; }
+  .actions button { font: inherit; font-size: 12px; cursor: pointer; color: var(--muted);
+                    background: none; border: 1px solid var(--border);
+                    border-radius: 7px; padding: 3px 10px; }
+  .actions button:hover { color: var(--text); }
+
+  /* markdown */
+  .md > *:first-child { margin-top: 0; }
+  .md > *:last-child { margin-bottom: 0; }
+  .md p { margin: 0 0 10px; }
+  .md h1, .md h2, .md h3, .md h4 { margin: 14px 0 6px; line-height: 1.3; }
+  .md h1 { font-size: 1.3em; } .md h2 { font-size: 1.18em; }
+  .md h3 { font-size: 1.06em; } .md h4 { font-size: 1em; }
+  .md ul, .md ol { margin: 0 0 10px; padding-left: 22px; }
+  .md li { margin: 2px 0; }
+  .md blockquote { margin: 0 0 10px; padding: 2px 0 2px 12px;
+                   border-left: 3px solid var(--border); color: var(--muted); }
+  .md hr { border: none; border-top: 1px solid var(--border); margin: 12px 0; }
+  .md a { color: var(--accent); }
+  .md code { background: var(--code); border-radius: 4px; padding: 1px 5px;
+             font: 13px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; }
+  .md pre { position: relative; background: var(--code); border: 1px solid var(--border);
+            border-radius: 9px; padding: 11px 12px; margin: 0 0 10px; overflow-x: auto; }
+  .md pre code { background: none; padding: 0; display: block; }
+  .md pre .copy { position: absolute; top: 6px; right: 6px; font: inherit; font-size: 11px;
+                  cursor: pointer; background: var(--panel); color: var(--muted);
+                  border: 1px solid var(--border); border-radius: 6px; padding: 2px 8px; }
+  .md pre:hover .copy, .md pre .copy:focus { color: var(--text); }
+
+  /* composer */
+  #composer { display: flex; gap: 8px; padding: 12px 14px; border-top: 1px solid var(--border); }
+  #input { flex: 1; background: var(--panel); color: var(--text); border: 1px solid var(--border);
+           border-radius: 10px; padding: 10px 12px; resize: none; height: 46px; font: inherit; }
+  #send { padding: 0 18px; border-radius: 10px; border: none; background: var(--accent);
+          color: #fff; cursor: pointer; font-weight: 600; min-width: 84px; }
+  #send.stop { background: var(--err); }
+  #send:disabled { opacity: .5; cursor: default; }
+
+  /* modal shell */
+  .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.55);
+           backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px);
+           align-items: center; justify-content: center; }
+  .modal.open { display: flex; }
+  @keyframes setIn { from { opacity: 0; transform: translateY(8px) scale(.985); }
+                     to   { opacity: 1; transform: none; } }
+
+  /* settings */
+  #setBox { background: var(--panel); border: 1px solid var(--border);
+            border-radius: 14px; width: min(92vw, clamp(620px, 52vw, 900px));
+            max-height: 86vh;
+            overflow-y: auto; padding: 0 20px;
+            box-shadow: 0 24px 70px rgba(0, 0, 0, .5);
+            overscroll-behavior: contain; }
+  .modal.open #setBox { animation: setIn .16s ease; }
+  #setBox h2 { position: sticky; top: 0; z-index: 2; margin: 0 -20px 14px;
+               padding: 16px 20px 12px; font-size: 16px;
+               background: var(--panel);
+               border-bottom: 1px solid var(--border); }
+  .sect { border-top: 1px solid var(--border); margin: 20px 0 16px;
+          padding-top: 14px; }
+  .sect:first-of-type { border-top: none; margin-top: 2px; padding-top: 0; }
+  .sect > h3::before { content: ""; display: inline-block; width: 3px; height: 10px;
+                       border-radius: 2px; background: var(--accent);
+                       margin-right: 7px; vertical-align: -1px; }
+  .sect > h3 { margin: 0 0 12px; font-size: 11px; font-weight: 600;
+               text-transform: uppercase; letter-spacing: .08em;
+               color: var(--muted); }
+  .field { margin-bottom: 16px; }
+  .field:last-child { margin-bottom: 0; }
+  .field > label { display: flex; align-items: center; gap: 6px;
+                   font-size: 13px; font-weight: 600; margin-bottom: 5px; }
+  /* The long explanations are one hover (or click, to pin) away rather than
+     printed under every field: useful the first time, noise every time after.
+     The bubble is position:fixed so it escapes this scrolling panel instead of
+     clipping at its edge. */
+  .info { display: inline-flex; align-items: center; justify-content: center;
+          width: 15px; height: 15px; padding: 0; border-radius: 50%;
+          cursor: pointer; background: none; border: 1px solid var(--border);
+          color: var(--muted); font: inherit; font-size: 9px; font-weight: 700;
+          line-height: 1; }
+  .info:hover { color: var(--text); border-color: var(--accent); }
+  .info[aria-expanded="true"] { color: var(--accent); border-color: var(--accent); }
+  #tipPop { position: fixed; z-index: 60; display: none; width: max-content;
+            max-width: min(360px, calc(100vw - 24px));
+            font-size: 11.5px; line-height: 1.55; color: var(--text);
+            background: var(--panel); border: 1px solid var(--border);
+            border-radius: 9px; padding: 9px 11px; white-space: pre-wrap;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, .45); }
+  #tipPop.open { display: block; }
+  .field .hint { font-size: 11px; color: var(--muted); margin-top: 4px; }
+  .field input[type=text], .field input[type=number], .field textarea, .field select {
+    width: 100%; background: var(--bg); color: var(--text); border: 1px solid var(--border);
+    border-radius: 9px; padding: 8px 10px; font: inherit;
+    transition: border-color .12s, box-shadow .12s; }
+  .field input:hover, .field textarea:hover, .field select:hover {
+    border-color: color-mix(in srgb, var(--muted) 55%, var(--border)); }
+  .field textarea { resize: vertical; line-height: 1.5; min-height: 60px; }
+  .field ::placeholder { color: color-mix(in srgb, var(--muted) 65%, transparent); }
+  #setSysPrompt { height: 96px; }
+  #setToolPrompt { height: 84px; font-size: 13px; }
+  #setCompressPrompt { height: 120px; font-size: 12.5px; }
+  #setMemory { height: 110px; font-size: 13px; }
+  .row { display: flex; gap: 8px; align-items: center; }
+  .row input[type=text] { flex: 1; }
+  .toggle { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 13px; }
+  .toggle input { width: 16px; height: 16px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .chip { display: inline-flex; align-items: center; gap: 6px; font-size: 12px;
+          background: var(--bg); border: 1px solid var(--border);
+          border-radius: 999px; padding: 3px 6px 3px 10px; }
+  .chip button { border: none; background: none; color: var(--muted);
+                 cursor: pointer; font-size: 13px; line-height: 1; padding: 0 2px; }
+  .chip button:hover { color: var(--err); }
+  .chip.builtin { color: var(--muted); }
+  .setFoot { position: sticky; bottom: 0; z-index: 2; display: flex;
+             justify-content: flex-end; gap: 8px; margin: 0 -20px;
+             padding: 12px 20px; background: var(--panel);
+             border-top: 1px solid var(--border); }
+  .setFoot button, .row button { font: inherit; font-size: 13px; cursor: pointer;
+    border-radius: 8px; padding: 7px 14px; border: 1px solid var(--border);
+    background: var(--bg); color: var(--text);
+    transition: border-color .12s, color .12s, filter .12s; }
+  .setFoot button:hover, .row button:hover { border-color: var(--muted); }
+  .setFoot .primary { background: var(--accent); border-color: var(--accent);
+                      color: #fff; font-weight: 600; }
+  .setFoot .primary:hover { filter: brightness(1.1); border-color: var(--accent); }
+  /* One assistant turn: its activity trail, then its answer. The trail is
+     deliberately quiet — a single muted line until you ask for the detail. */
+  .turn { align-self: stretch; width: 100%;
+          display: flex; flex-direction: column; align-items: flex-start;
+          gap: 10px; }
+  .turn > .trail { max-width: 76ch; }
+
+  .trail { font-size: 12.5px; }
+  .trail > summary { list-style: none; cursor: pointer; color: var(--muted);
+                     display: inline-flex; gap: 7px; align-items: center;
+                     padding: 3px 0; border-radius: 6px; user-select: none; }
+  .trail > summary::-webkit-details-marker { display: none; }
+  .trail > summary .chev { font-size: 9px; opacity: .6; transition: transform .15s; }
+  .trail[open] > summary .chev { transform: rotate(90deg); }
+  .trail > summary:hover { color: var(--text); }
+  .trail .live { font-weight: 500; }
+
+  /* Timeline: one rail, a dot per step. */
+  .trail .body { margin: 6px 0 0 6px; padding-left: 18px;
+                 border-left: 1px solid var(--border); }
+  .step { position: relative; padding: 8px 0; }
+  .step::before { content: ""; position: absolute; left: -23px; top: 14px;
+                  width: 7px; height: 7px; border-radius: 50%;
+                  background: var(--border); outline: 3px solid var(--bg); }
+  .step.search::before { background: var(--accent); }
+  .step.fetch::before { background: #4fb286; }
+  .step.think::before { background: #a98bd6; }
+  .step .what { color: var(--text); }
+  .step .q { color: var(--accent); }
+  .step .dim { color: var(--muted); }
+  .step ol { margin: 6px 0 0; padding: 0; list-style: none; }
+  .step li { margin: 5px 0; }
+  .step li a { color: var(--text); text-decoration: none; }
+  .step li a:hover { text-decoration: underline; }
+  .step .host { color: var(--muted); font-size: 11px; }
+  .step .snip { display: block; color: var(--muted); margin-top: 1px; }
+  .step .think-text { white-space: pre-wrap; color: var(--muted); margin-top: 5px;
+                      max-height: 220px; overflow-y: auto; padding-right: 6px; }
+
+  @keyframes pulse { 0%,100% { opacity: 1 } 50% { opacity: .45 } }
+  .trail.running > summary .live { color: var(--accent);
+                                   animation: pulse 1.4s ease-in-out infinite; }
+
+  /* Sources as domain chips rather than a run-on list of titles. */
+  /* Wraps at the window edge, not at the text measure: these are short chips,
+     and reflowing them to fit the width beats a fixed break point. */
+  .sources { display: flex; flex-wrap: wrap; gap: 6px; align-items: center;
+             font-size: 11px; color: var(--muted); margin: 0;
+             align-self: stretch; }
+  .sources .chip-src { display: inline-flex; align-items: center; gap: 5px;
+                       border: 1px solid var(--border); border-radius: 999px;
+                       padding: 2px 9px; color: var(--muted);
+                       text-decoration: none; }
+  .sources .chip-src:hover { color: var(--text); border-color: var(--accent); }
+  .sources .chip-src .n { opacity: .6; }
+</style>
+</head>
+<body>
+  <nav id="side">
+    <div id="sideTop">
+      <h1 id="appName">Synthorai Chatbot Demo</h1>
+      <button id="newBtn">+ New conversation</button>
+      <input id="search" type="search" placeholder="Search conversations…" autocomplete="off">
+    </div>
+    <div id="convList"></div>
+    <div id="sideBottom"><button id="settingsBtn">Settings</button></div>
+  </nav>
+
+  <div id="main">
+    <div id="topbar">
+      <select id="modelSel" title="Model for the next turn"></select>
+      <span id="searchPill" title="Web search runs on the gateway">web search</span>
+    </div>
+    <div id="stats">
+      <div class="grp">
+        <span class="lbl">session</span>
+        <span id="statTokens">—</span>
+      </div>
+      <div class="grp" style="flex:1; min-width:280px">
+        <span class="lbl">context</span>
+        <div id="compBar"></div>
+        <span id="compUsed"></span>
+      </div>
+      <span id="compKey"></span>
+      <span id="statsToggle">details</span>
+    </div>
+    <div id="chat"></div>
+    <div id="composer">
+      <textarea id="input" placeholder="Message… (Enter to send, Shift+Enter for newline)"></textarea>
+      <button id="send">Send</button>
+    </div>
+  </div>
+
+  <div id="setModal" class="modal"><div id="setBox">
+    <h2>Settings</h2>
+
+    <div class="sect">
+      <h3>Models</h3>
+      <div class="field">
+        <label for="setNewModel">Lineup
+          <button type="button" class="info" id="tipModels">i</button></label>
+        <div class="row">
+          <input type="text" id="setNewModel" placeholder="model id, e.g. claude-opus-5"
+                 autocomplete="off">
+          <button type="button" id="setAddModel">Add</button>
+        </div>
+        <div class="chips" id="setModelChips"></div>
+      </div>
+    </div>
+
+    <div class="sect">
+      <h3>Context</h3>
+      <div class="field">
+        <label for="setBudget">Context window (tokens)
+          <button type="button" class="info" id="tipBudget">i</button></label>
+        <input type="number" id="setBudget" min="1000" step="1000">
+      </div>
+      <div class="field">
+        <label for="setSysPrompt">System prompt
+          <button type="button" class="info" id="tipSysPrompt">i</button></label>
+        <div class="row" style="margin-bottom:6px">
+          <select id="setPreset"><option value="">Load a preset…</option></select>
+        </div>
+        <textarea id="setSysPrompt" spellcheck="false"></textarea>
+      </div>
+    </div>
+
+    <div class="sect">
+      <h3>Memory</h3>
+      <div class="field">
+        <label for="setCompressPrompt">Compression prompt
+          <button type="button" class="info" id="tipCompressPrompt">i</button></label>
+        <textarea id="setCompressPrompt" spellcheck="false"></textarea>
+      </div>
+      <div class="field">
+        <label for="setMemory">Long-term memory
+          <button type="button" class="info" id="tipMemory">i</button></label>
+        <textarea id="setMemory" spellcheck="false"
+                  placeholder="(empty — facts are extracted when a conversation is first compressed)"></textarea>
+      </div>
+    </div>
+
+    <div class="sect">
+      <h3>Tooling</h3>
+      <div class="field">
+        <label class="toggle" for="setWebSearch">
+          <input type="checkbox" id="setWebSearch"> Web search
+          <button type="button" class="info" id="tipWebSearch">i</button></label>
+      </div>
+      <div class="field">
+        <label class="toggle" for="setWebFetch">
+          <input type="checkbox" id="setWebFetch"> Web fetch
+          <button type="button" class="info" id="tipWebFetch">i</button></label>
+      </div>
+      <div class="field">
+        <label for="setToolPrompt">Tool instructions
+          <button type="button" class="info" id="tipToolPrompt">i</button></label>
+        <textarea id="setToolPrompt" spellcheck="false"></textarea>
+      </div>
+    </div>
+
+    <div class="setFoot">
+      <button type="button" id="setCancel">Cancel</button>
+      <button type="button" class="primary" id="setSave">Save</button>
+    </div>
+  </div></div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+let CFG = null, conv = null;
+let controller = null;      // AbortController for the in-flight turn
+let streaming = false;
+
+/* ---------------------------------------------------------------- markdown */
+
+function escapeHtml(s) {
+  return s.replace(/[&<>"']/g, (c) => (
+    { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]
+  ));
+}
+
+// Split accumulated text into the part that is safe to render as markdown and
+// the tail that is not. Rendering a half-open construct makes the layout jump
+// when the next token closes it, so the tail stays plain text until it is.
+function splitStable(raw) {
+  const nl = raw.lastIndexOf("\n");
+  let cut = nl === -1 ? 0 : nl + 1;   // whole lines only; the last one may grow
+  // An opening fence whose closer hasn't arrived stays in the tail. Checking
+  // this after the line cut matters: a closing "```" is even-numbered the
+  // moment it is typed, but its line isn't complete until the newline lands.
+  const re = /^```/gm;
+  let fences = 0, lastStart = -1, m;
+  while ((m = re.exec(raw)) && m.index < cut) { fences++; lastStart = m.index; }
+  if (fences % 2 === 1) cut = lastStart;
+  return [raw.slice(0, cut), raw.slice(cut)];
+}
+
+function renderInline(s) {
+  // Inline code comes out first so emphasis markers inside it stay literal.
+  // The sentinel is a control character escaped HTML can never contain.
+  const codes = [];
+  s = s.replace(/`([^`\n]+)`/g, (_, c) => `\u0000${codes.push(c) - 1}\u0000`);
+  s = s.replace(
+    /\[([^\]\n]+)\]\((https?:\/\/[^\s)]+)\)/g,
+    (_, t, u) => `<a href="${u}" target="_blank" rel="noopener noreferrer">${t}</a>`
+  );
+  s = s.replace(/\*\*([^*\n]+)\*\*/g, "<strong>$1</strong>");
+  s = s.replace(/(^|[^*\w])\*([^*\n]+)\*/g, "$1<em>$2</em>");
+  return s.replace(/\u0000(\d+)\u0000/g, (_, i) => `<code>${codes[i]}</code>`);
+}
+
+function renderMarkdown(md) {
+  const lines = escapeHtml(md).split("\n");
+  const para = [];
+  let html = "", i = 0;
+  const flush = () => {
+    if (para.length) html += `<p>${renderInline(para.join("<br>"))}</p>`;
+    para.length = 0;
+  };
+  while (i < lines.length) {
+    const line = lines[i];
+    let m;
+    if ((m = line.match(/^```(\S*)\s*$/))) {
+      flush();
+      const body = [];
+      i++;
+      while (i < lines.length && !/^```\s*$/.test(lines[i])) body.push(lines[i++]);
+      i++;
+      html += `<pre><button class="copy" type="button">Copy</button>`
+            + `<code>${body.join("\n")}</code></pre>`;
+    } else if ((m = line.match(/^(#{1,6})\s+(.*)$/))) {
+      flush();
+      const h = Math.min(m[1].length, 4);
+      html += `<h${h}>${renderInline(m[2])}</h${h}>`;
+      i++;
+    } else if (/^\s*(?:---+|\*\*\*+|___+)\s*$/.test(line)) {
+      flush(); html += "<hr>"; i++;
+    } else if (/^\s*&gt;\s?/.test(line)) {
+      flush();
+      const body = [];
+      while (i < lines.length && /^\s*&gt;\s?/.test(lines[i]))
+        body.push(lines[i++].replace(/^\s*&gt;\s?/, ""));
+      html += `<blockquote>${renderInline(body.join("<br>"))}</blockquote>`;
+    } else if (/^\s*[-*+]\s+/.test(line)) {
+      flush();
+      const items = [];
+      while (i < lines.length && /^\s*[-*+]\s+/.test(lines[i]))
+        items.push(lines[i++].replace(/^\s*[-*+]\s+/, ""));
+      html += "<ul>" + items.map((t) => `<li>${renderInline(t)}</li>`).join("") + "</ul>";
+    } else if (/^\s*\d+[.)]\s+/.test(line)) {
+      flush();
+      const items = [];
+      while (i < lines.length && /^\s*\d+[.)]\s+/.test(lines[i]))
+        items.push(lines[i++].replace(/^\s*\d+[.)]\s+/, ""));
+      html += "<ol>" + items.map((t) => `<li>${renderInline(t)}</li>`).join("") + "</ol>";
+    } else if (line.trim() === "") {
+      flush(); i++;
+    } else {
+      para.push(line); i++;
+    }
+  }
+  flush();
+  return html;
+}
+
+// Copy buttons are delegated so freshly streamed code blocks work too.
+$("chat").addEventListener("click", async (e) => {
+  const btn = e.target.closest(".copy");
+  if (!btn) return;
+  const code = btn.parentElement.querySelector("code");
+  try {
+    await navigator.clipboard.writeText(code.textContent);
+    btn.textContent = "Copied";
+  } catch {
+    btn.textContent = "Copy failed";
+  }
+  setTimeout(() => { btn.textContent = "Copy"; }, 1400);
+});
+
+/* ------------------------------------------------------------------- chrome */
+
+async function api(path, opts) {
+  const r = await fetch("/api" + path, opts);
+  if (!r.ok) throw new Error((await r.json()).error || r.statusText);
+  return r.json();
+}
+const json = (body) => ({
+  method: "POST", headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(body),
+});
+
+function scrollDown() { $("chat").scrollTop = $("chat").scrollHeight; }
+
+function addUserMsg(text) {
+  const el = document.createElement("div");
+  el.className = "msg user";
+  el.textContent = text;
+  $("chat").appendChild(el);
+  scrollDown();
+  return el;
+}
+
+// An assistant bubble owns its raw text and re-renders the settled prefix only
+// when that prefix actually grew, so streaming does not rebuild the DOM per token.
+function addBotMsg(text = "", interrupted = false, host = null) {
+  const el = document.createElement("div");
+  el.className = "msg assistant" + (interrupted ? " interrupted" : "");
+  el.innerHTML = '<div class="md"></div><span class="tail"></span>';
+  el.raw = "";
+  el.stableLen = -1;
+  (host || $("chat")).appendChild(el);
+  const api = {
+    el,
+    append(chunk) {
+      el.raw += chunk;
+      const [stable, tail] = splitStable(el.raw);
+      if (stable.length !== el.stableLen) {
+        el.querySelector(".md").innerHTML = renderMarkdown(stable);
+        el.stableLen = stable.length;
+      }
+      el.querySelector(".tail").textContent = tail;
+      scrollDown();
+    },
+    settle(wasInterrupted) {
+      el.querySelector(".md").innerHTML = renderMarkdown(el.raw);
+      el.querySelector(".tail").textContent = "";
+      if (wasInterrupted) {
+        el.classList.add("interrupted");
+        const badge = document.createElement("div");
+        badge.className = "badge";
+        badge.textContent = "interrupted";
+        el.appendChild(badge);
+      }
+      scrollDown();
+    },
+  };
+  if (text) api.append(text);
+  return api;
+}
+
+// One assistant turn's activity: what it thought, searched, and read. Quiet by
+// default — a single muted line above the answer — and expandable into a
+// timeline of the steps, the shape users already know from the major chat
+// apps: the process is available for auditing an answer without competing
+// with it for attention.
+function hostOf(url) {
+  try { return new URL(url).hostname.replace(/^www\./, ""); }
+  catch { return url; }
+}
+
+function newTrail() {
+  const box = document.createElement("details");
+  box.className = "trail running";
+
+  const summary = document.createElement("summary");
+  const chev = document.createElement("span");
+  chev.className = "chev";
+  chev.textContent = "❯";
+  const live = document.createElement("span");
+  live.className = "live";
+  live.textContent = "Working…";
+  summary.append(chev, live);
+  box.appendChild(summary);
+
+  const body = document.createElement("div");
+  body.className = "body";
+  box.appendChild(body);
+
+  const counts = { searched: 0, read: 0 };
+  let thinkingStep = null, thoughtSeconds = 0;
+
+  const step = (kind) => {
+    const el = document.createElement("div");
+    el.className = "step " + kind;
+    body.appendChild(el);
+    return el;
+  };
+
+  const relabel = () => {
+    const bits = [];
+    if (thinkingStep) {
+      bits.push(thoughtSeconds >= 1
+        ? `Thought for ${Math.round(thoughtSeconds)}s`
+        : "Thought it through");
+    }
+    if (counts.searched) {
+      bits.push(`Searched the web${counts.searched > 1 ? ` ${counts.searched}×` : ""}`);
+    }
+    if (counts.read) {
+      bits.push(`Read ${counts.read} page${counts.read === 1 ? "" : "s"}`);
+    }
+    live.textContent = bits.length ? bits.join(" · ") : "Done";
+  };
+
+  return {
+    el: box,
+    used: false,
+
+    search(ev) {
+      this.used = true;
+      counts.searched++;
+      live.textContent = `Searching the web…`;
+      const el = step("search");
+      const what = document.createElement("div");
+      what.className = "what";
+      what.append("Searched for ");
+      const q = document.createElement("span");
+      q.className = "q";
+      q.textContent = `“${ev.query}”`;
+      what.appendChild(q);
+      el.appendChild(what);
+
+      const list = document.createElement("ol");
+      for (const r of ev.results) {
+        const li = document.createElement("li");
+        const a = document.createElement("a");
+        a.href = r.url; a.target = "_blank"; a.rel = "noopener noreferrer";
+        a.textContent = r.title;
+        li.appendChild(a);
+        const host = document.createElement("span");
+        host.className = "host";
+        host.textContent = " · " + hostOf(r.url);
+        li.appendChild(host);
+        if (r.snippet) {
+          const s = document.createElement("span");
+          s.className = "snip";
+          s.textContent = r.snippet.slice(0, 130) + (r.snippet.length > 130 ? "…" : "");
+          li.appendChild(s);
+        }
+        list.appendChild(li);
+      }
+      el.appendChild(list);
+      scrollDown();
+    },
+
+    fetch(ev) {
+      this.used = true;
+      counts.read++;
+      live.textContent = `Reading ${hostOf(ev.url)}…`;
+      const el = step("fetch");
+      const what = document.createElement("div");
+      what.className = "what";
+      what.append("Read ");
+      const a = document.createElement("a");
+      a.href = ev.url; a.target = "_blank"; a.rel = "noopener noreferrer";
+      a.textContent = ev.title || ev.url;
+      what.appendChild(a);
+      const dim = document.createElement("span");
+      dim.className = "dim";
+      dim.textContent = ` · ${hostOf(ev.url)} · `
+        + `${(ev.chars || 0).toLocaleString()} characters`;
+      what.appendChild(dim);
+      el.appendChild(what);
+      scrollDown();
+    },
+
+    reasoning(text, seconds) {
+      this.used = true;
+      if (!thinkingStep) {
+        thinkingStep = step("think");
+        const what = document.createElement("div");
+        what.className = "what";
+        what.textContent = "Thinking";
+        thinkingStep.appendChild(what);
+        const pre = document.createElement("div");
+        pre.className = "think-text";
+        thinkingStep.appendChild(pre);
+        live.textContent = "Thinking…";
+      }
+      if (seconds) thoughtSeconds = seconds;
+      const pre = thinkingStep.querySelector(".think-text");
+      pre.textContent += text;
+      pre.scrollTop = pre.scrollHeight;
+    },
+
+    note(message) {
+      this.used = true;
+      step("note").textContent = message;
+    },
+
+    settle() {
+      box.classList.remove("running");
+      relabel();
+      if (!this.used) box.remove();
+    },
+  };
+}
+
+// Sources as domain chips: a dozen full titles in a run-on line is unreadable,
+// and what you actually scan for is which sites an answer rests on.
+function addSources(sources, host) {
+  const seen = new Set();
+  const unique = sources.filter((s) => !seen.has(s.url) && seen.add(s.url));
+  if (!unique.length) return;
+  const el = document.createElement("div");
+  el.className = "sources";
+  el.append("Sources");
+  unique.forEach((s, i) => {
+    const a = document.createElement("a");
+    a.className = "chip-src";
+    a.href = s.url;
+    a.target = "_blank";
+    a.rel = "noopener noreferrer";
+    a.title = s.title || s.url;
+    const n = document.createElement("span");
+    n.className = "n";
+    n.textContent = i + 1;
+    a.append(n, hostOf(s.url));
+    el.appendChild(a);
+  });
+  (host || $("chat")).appendChild(el);
+  scrollDown();
+}
+
+function addMeta(host, text) {
+  const el = document.createElement("div");
+  el.className = "meta";
+  el.textContent = text;
+  (host || $("chat")).appendChild(el);
+}
+
+// A notice carries its own recovery path; `actions` is [[label, handler], …].
+function addNotice(text, level = "", actions = []) {
+  const el = document.createElement("div");
+  el.className = "notice" + (level ? " " + level : "");
+  el.appendChild(document.createTextNode(text));
+  for (const [label, handler] of actions) {
+    const b = document.createElement("button");
+    b.textContent = label;
+    b.onclick = () => { el.remove(); handler(); };
+    el.appendChild(b);
+  }
+  $("chat").appendChild(el);
+  scrollDown();
+  return el;
+}
+
+// The composition of the next request, and what the session has spent so far.
+// Cached tokens are called out because they are the whole point of ordering the
+// prompt most-stable-first: everything before the cache mark is reused.
+const COMPOSITION = [
+  ["system_prompt", "system", "#5b8cff"],
+  ["memory", "memory", "#4fb286"],
+  ["summary", "summary", "#e0a03a"],
+  ["history", "history", "#a98bd6"],
+];
+
+function fmt(n) {
+  return n >= 1000 ? (n / 1000).toFixed(n >= 10000 ? 0 : 1) + "k" : String(n);
+}
+
+// Cost is only ever a floor. A turn small enough that its cost falls below the
+// precision the field is reported in comes back with no cost at all, so those
+// turns are counted and shown rather than quietly added as zero.
+function costField(t) {
+  const missing = t.cost_missing_turns || 0;
+  const gap = missing
+    ? ` <span title="${missing} turn${missing === 1 ? "" : "s"} came back with `
+      + `no cost field \u2014 too small to report at the precision the gateway `
+      + `uses. This total is a floor, not the bill">`
+      + `(+${missing} unreported)</span>`
+    : "";
+  return t.cost_reported
+    ? `<b>$${Number(t.cost || 0).toFixed(6)}</b>${gap}`
+    : `<b title="No turn in this conversation came back with a cost field">$—</b>${gap}`;
+}
+
+function renderStats() {
+  if (!conv) return;
+  const budgetTotal = (conv.context_budget_tokens || CFG.context_budget_tokens);
+  const t = conv.totals || {};
+  const inTok = t.input_tokens || 0;
+  const cached = t.cached_tokens || 0;
+  const share = inTok ? Math.round((cached / inTok) * 100) : 0;
+  // Every field, every time, zeros included. A stat that disappears when it is
+  // zero makes the line jump around and leaves you guessing whether the number
+  // was nothing or the feature simply did not report.
+  const searches = t.web_searches || 0;
+  $("statTokens").innerHTML = [
+    `<b>${fmt(inTok)}</b> in`,
+    `<b class="save">${fmt(cached)}</b> cached (${share}%)`,
+    `<b>${fmt(t.output_tokens || 0)}</b> out`,
+    `<b>${searches}</b> search${searches === 1 ? "" : "es"}`,
+    `<b>${t.web_fetches || 0}</b> fetch${(t.web_fetches || 0) === 1 ? "" : "es"}`,
+    costField(t),
+    `${t.turns || 0} turn${t.turns === 1 ? "" : "s"}`,
+  ].join(" · ");
+
+  const b = conv.breakdown;
+  if (!b) return;
+
+  // One bar for two jobs: how full the window is, and what is filling it. The
+  // total is the measured prompt size where we have one; the parts are only
+  // estimates, so they are scaled to agree with it rather than shown raw —
+  // otherwise the segments would not add up to the number beside them.
+  const used = conv.last_prompt_tokens || b.measured_total || b.estimated_total;
+  const scale = b.estimated_total ? used / b.estimated_total : 1;
+  const pct = Math.min(100, (used / budgetTotal) * 100);
+
+  $("compBar").innerHTML = "";
+  $("compKey").innerHTML = "";
+  for (const [key, label, colour] of COMPOSITION) {
+    const value = b.parts[key] || 0;
+    if (!value) continue;
+    const seg = document.createElement("span");
+    seg.style.width = Math.min(100, (value * scale / budgetTotal) * 100) + "%";
+    seg.style.background = colour;
+    seg.title = `${label}: ~${Math.round(value * scale)} tokens`;
+    $("compBar").appendChild(seg);
+    const swatch = document.createElement("i");
+    swatch.style.color = colour;
+    swatch.textContent = `${label} ${fmt(Math.round(value * scale))}`;
+    $("compKey").appendChild(swatch);
+  }
+  $("compBar").classList.toggle("full", pct > 85);
+  $("compUsed").innerHTML =
+    `<b${pct > 85 ? ' style="color:var(--warn)"' : ""}>${fmt(used)}</b>`
+    + ` / ${fmt(budgetTotal)}`;
+}
+
+function setStreaming(on) {
+  streaming = on;
+  const btn = $("send");
+  btn.textContent = on ? "Stop" : "Send";
+  btn.classList.toggle("stop", on);
+  btn.title = on ? "Stop generating (also stops the upstream call)" : "";
+  if (!on) renderActions();
+}
+
+// Regenerate sits under the last reply whenever there is one to redo — the
+// counterpart to Stop, so an abandoned turn is one click from a fresh attempt.
+function renderActions() {
+  document.querySelectorAll("#chat .actions").forEach((n) => n.remove());
+  if (streaming || !conv) return;
+  const last = conv.messages[conv.messages.length - 1];
+  if (!last || last.role !== "assistant") return;
+  const row = document.createElement("div");
+  row.className = "actions";
+  const b = document.createElement("button");
+  b.textContent = "↻ Regenerate";
+  b.onclick = () => regenerate();
+  row.appendChild(b);
+  $("chat").appendChild(row);
+}
+
+/* ------------------------------------------------------------ conversations */
+
+async function refreshList() {
+  const items = await api("/conversations?q=" + encodeURIComponent($("search").value));
+  const list = $("convList");
+  list.innerHTML = "";
+  if (!items.length) {
+    const e = document.createElement("div");
+    e.id = "empty";
+    e.textContent = $("search").value ? "No matches." : "No conversations yet.";
+    list.appendChild(e);
+    return;
+  }
+  for (const it of items) {
+    const el = document.createElement("div");
+    el.className = "convItem" + (conv && it.id === conv.id ? " active" : "");
+    const t = document.createElement("span");
+    t.className = "t";
+    t.textContent = it.title;
+    t.onclick = () => openConv(it.id);
+    el.appendChild(t);
+
+    const ren = document.createElement("button");
+    ren.className = "act"; ren.title = "Rename"; ren.textContent = "✎";
+    ren.onclick = async (e) => {
+      e.stopPropagation();
+      const title = prompt("Rename conversation", it.title);
+      if (title === null) return;
+      await api("/conversations/" + it.id, {
+        method: "PATCH", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title }),
+      });
+      if (conv && conv.id === it.id) conv.title = title.trim() || "Untitled";
+      refreshList();
+    };
+    el.appendChild(ren);
+
+    const del = document.createElement("button");
+    del.className = "act"; del.title = "Delete"; del.textContent = "✕";
+    del.onclick = async (e) => {
+      e.stopPropagation();
+      if (!confirm(`Delete "${it.title}"? This cannot be undone.`)) return;
+      await api("/conversations/" + it.id, { method: "DELETE" });
+      if (conv && conv.id === it.id) conv = null;
+      const rest = await api("/conversations");
+      if (!conv) rest.length ? await openConv(rest[0].id) : await newConv();
+      else refreshList();
+    };
+    el.appendChild(del);
+    list.appendChild(el);
+  }
+}
+
+function drawConversation() {
+  $("chat").innerHTML = "";
+  $("modelSel").value = conv.model;
+  updateSearchPill();
+  if (conv.summary)
+    addNotice("Earlier turns were compressed into a summary (still in context).");
+  for (const m of conv.messages) {
+    if (m.role === "user") { addUserMsg(m.content); continue; }
+    // Rebuild the turn: its activity trail, the answer, then its sources.
+    const turn = document.createElement("div");
+    turn.className = "turn";
+    $("chat").appendChild(turn);
+    if (m.activity?.length) {
+      const trail = newTrail();
+      turn.appendChild(trail.el);
+      for (const step of m.activity) {
+        if (step.kind === "search") trail.search(step);
+        else if (step.kind === "fetch") trail.fetch(step);
+        else if (step.kind === "reasoning") trail.reasoning(step.text, step.seconds);
+      }
+      trail.settle();
+    }
+    // A turn can end with activity but no answer; do not draw an empty bubble.
+    if (m.content) addBotMsg(m.content, m.interrupted, turn).settle(m.interrupted);
+    if (m.sources?.length) addSources(m.sources, turn);
+  }
+  renderStats();
+  renderActions();
+}
+
+async function openConv(id) {
+  conv = await api("/conversations/" + id);
+  drawConversation();
+  refreshList();
+}
+
+async function newConv() {
+  conv = await api("/conversations", json({ model: $("modelSel").value || undefined }));
+  drawConversation();
+  refreshList();
+}
+
+/* -------------------------------------------------------------------- turns */
+
+// Every failure mode gets a named recovery path instead of one red line.
+function handleError(ev, draft) {
+  const retry = ["Retry", () => regenerate()];
+  const editAndResend = ["Edit & resend", async () => {
+    const { text, conversation } = await api(`/conversations/${conv.id}/rewind`, json({}));
+    conv = conversation;
+    drawConversation();
+    $("input").value = text || draft || "";
+    $("input").focus();
+  }];
+
+  if (ev.kind === "content_filter") {
+    addNotice("The provider stopped this reply for content policy reasons. "
+              + "Retrying the same text will be refused again.", "err", [editAndResend]);
+    return;
+  }
+  if (ev.kind === "auth") {
+    addNotice("Authentication failed: " + ev.message
+              + " — put a valid SYNTHORAI_API_KEY in .env.", "err");
+    return;
+  }
+  if (ev.kind === "rate_limit") {
+    const wait = ev.retry_after ? ` Retry in ~${ev.retry_after}s.` : "";
+    addNotice("Rate limited by the provider." + wait, "err",
+              [ev.user_message_kept === false ? resendDraft(draft) : retry]);
+    return;
+  }
+  const label = ev.kind === "network" ? "Network error reaching the provider."
+                                      : "The provider returned an error.";
+  addNotice(`${label} ${ev.message}`, "err",
+            [ev.user_message_kept === false ? resendDraft(draft) : retry]);
+}
+
+function resendDraft(draft) {
+  return ["Retry", () => {
+    $("input").value = draft;
+    send();
+  }];
+}
+
+// One reader for both /chat and /regenerate: they emit the same event stream.
+async function runStream(url, body, { draft = "", bot = null } = {}) {
+  controller = new AbortController();
+  setStreaming(true);
+  let interrupted = false, sawError = false;
+
+  // The turn's container goes in immediately so activity has somewhere to land
+  // before the first token; it removes its own trail if nothing used it.
+  const turn = document.createElement("div");
+  turn.className = "turn";
+  $("chat").appendChild(turn);
+  const trail = newTrail();
+  turn.appendChild(trail.el);
+  try {
+    const resp = await fetch(url, { ...json(body), signal: controller.signal });
+    if (!resp.ok) {
+      handleError({ kind: "upstream", message: resp.statusText,
+                    user_message_kept: false }, draft);
+      return;
+    }
+    const reader = resp.body.getReader();
+    const dec = new TextDecoder();
+    let buf = "";
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buf += dec.decode(value, { stream: true });
+      let idx;
+      while ((idx = buf.indexOf("\n\n")) >= 0) {
+        const frame = buf.slice(0, idx);
+        buf = buf.slice(idx + 2);
+        if (!frame.startsWith("data: ")) continue;
+        const ev = JSON.parse(frame.slice(6));
+        if (ev.type === "delta") {
+          if (!bot) bot = addBotMsg("", false, turn);
+          bot.append(ev.text);
+        } else if (ev.type === "search") {
+          trail.search(ev);
+        } else if (ev.type === "fetch") {
+          trail.fetch(ev);
+        } else if (ev.type === "reasoning") {
+          trail.reasoning(ev.text);
+        } else if (ev.type === "compression") {
+          addNotice(`Compressed ${ev.compressed_messages} old messages into a `
+            + `${ev.summary_tokens_est}-token summary`
+            + (ev.memory_facts_added
+                ? `; saved ${ev.memory_facts_added} fact(s) to long-term memory` : ""));
+        } else if (ev.type === "warning") {
+          if (ev.kind === "tool_unavailable") trail.note(ev.message);
+          else addNotice(`Compression failed (${ev.message}); dropped `
+            + `${ev.dropped} old messages unsummarized. The turn continued `
+            + "without them.", "warn");
+        } else if (ev.type === "error") {
+          sawError = true;
+          if (bot) bot.settle(true);
+          handleError(ev, draft);
+        } else if (ev.type === "done") {
+          if (bot) bot.settle(false);
+          if (ev.sources?.length) addSources(ev.sources, turn);
+          const u = ev.usage;
+          if (u) {
+            addMeta(turn, `${ev.input_tokens_total || u.prompt_tokens} in`
+              + (ev.cached_tokens ? ` (${ev.cached_tokens} cached)` : "")
+              + ` · ${u.completion_tokens} out`
+              + (u.web_search_requests
+                  ? ` · ${u.web_search_requests} search`
+                    + (u.web_search_requests === 1 ? "" : "es") : "")
+              + (ev.cost_reported
+                  ? ` · $${Number(u.cost).toFixed(6)}`
+                  : " · cost not reported"));
+          }
+          if (ev.truncated)
+            addNotice("Reply hit MAX_COMPLETION_TOKENS and was cut off.", "warn");
+          if (ev.totals) conv.totals = ev.totals;
+          conv.last_prompt_tokens = ev.budget.prompt_tokens;
+          renderStats();
+        }
+      }
+    }
+  } catch (e) {
+    if (e.name === "AbortError") {
+      // Stop button. The server sees the disconnect, closes the upstream call,
+      // and keeps the partial reply marked interrupted.
+      interrupted = true;
+      if (bot) bot.settle(true);
+    } else {
+      handleError({ kind: "network", message: String(e), user_message_kept: true }, draft);
+      if (bot) bot.settle(true);
+    }
+  } finally {
+    trail.settle();
+    if (!turn.childElementCount) turn.remove();
+    controller = null;
+    // Re-read the conversation so the local copy matches what was persisted
+    // (partials, rollbacks, compression) before deciding what to offer next.
+    try {
+      conv = await api("/conversations/" + conv.id);
+      renderStats();
+    } catch {}
+    setStreaming(false);
+    refreshList();
+  }
+  return { interrupted, sawError };
+}
+
+async function send() {
+  const text = $("input").value.trim();
+  if (!text || !conv || streaming) return;
+  $("input").value = "";
+  addUserMsg(text);
+  await runStream(`/api/conversations/${conv.id}/chat`, {
+    message: text,
+    model: $("modelSel").value,
+  }, { draft: text });
+}
+
+async function regenerate() {
+  if (!conv || streaming) return;
+  // Drop the reply being replaced from the view; the server drops it from the
+  // conversation. Anything before the last user turn is untouched.
+  while (conv.messages.length && conv.messages[conv.messages.length - 1].role === "assistant")
+    conv.messages.pop();
+  drawConversation();
+  await runStream(`/api/conversations/${conv.id}/regenerate`, {
+    model: $("modelSel").value,
+  });
+}
+
+/* ----------------------------------------------------------------- settings */
+
+let pendingModels = [];   // the custom model list being edited, unsaved
+
+function rebuildModelPicker(keep) {
+  const sel = $("modelSel");
+  sel.innerHTML = "";
+  for (const group of CFG.model_groups) {
+    const og = document.createElement("optgroup");
+    og.label = group.label;
+    for (const m of group.models) {
+      const o = document.createElement("option");
+      o.value = m; o.textContent = m;
+      og.appendChild(o);
+    }
+    sel.appendChild(og);
+  }
+  sel.value = keep && CFG.models.includes(keep) ? keep : CFG.default_model;
+}
+
+function modelChip(name, removable) {
+  const chip = document.createElement("span");
+  chip.className = "chip" + (removable ? "" : " builtin");
+  chip.appendChild(document.createTextNode(name));
+  if (removable) {
+    const x = document.createElement("button");
+    x.type = "button"; x.textContent = "×"; x.title = "Remove";
+    x.onclick = () => {
+      pendingModels = pendingModels.filter((m) => m !== name);
+      renderModelChips();
+    };
+    chip.appendChild(x);
+  }
+  return chip;
+}
+
+function renderModelChips() {
+  const wrap = $("setModelChips");
+  wrap.innerHTML = "";
+  const builtin = CFG.models.filter((m) => !CFG.custom_models.includes(m));
+  for (const m of builtin) wrap.appendChild(modelChip(m, false));
+  for (const m of pendingModels) {
+    if (!builtin.includes(m)) wrap.appendChild(modelChip(m, true));
+  }
+}
+
+function addModel() {
+  const name = $("setNewModel").value.trim();
+  if (!name) return;
+  if (!pendingModels.includes(name) && !CFG.models.includes(name))
+    pendingModels.push(name);
+  $("setNewModel").value = "";
+  renderModelChips();
+}
+
+// Settings explanations. Hover to peek, click to pin — hover alone loses the
+// text the moment you reach for the field it describes. The bubble is a single
+// shared, position:fixed node so it can overhang the scrolling panel.
+let tipPinned = null;
+
+function tipBubble() {
+  let el = $("tipPop");
+  if (!el) {
+    el = document.createElement("div");
+    el.id = "tipPop";
+    document.body.appendChild(el);
+  }
+  return el;
+}
+
+function showTip(btn) {
+  const pop = tipBubble();
+  pop.textContent = btn._tip;
+  pop.classList.add("open");
+  // Park it at the origin first: measuring while it sits against a viewport
+  // edge would report a width the browser shrank to fit.
+  pop.style.left = "0px";
+  pop.style.top = "0px";
+  const r = btn.getBoundingClientRect();
+  const { offsetWidth: w, offsetHeight: h } = pop;
+  const left = Math.max(10, Math.min(r.left - 4, innerWidth - w - 10));
+  // Below the marker, unless that would run off the bottom.
+  const below = r.bottom + 8;
+  const top = below + h > innerHeight - 10 ? Math.max(10, r.top - h - 8) : below;
+  pop.style.left = `${left}px`;
+  pop.style.top = `${top}px`;
+}
+
+function hideTip() {
+  tipBubble().classList.remove("open");
+}
+
+function unpinTip() {
+  if (!tipPinned) return;
+  tipPinned.setAttribute("aria-expanded", "false");
+  tipPinned = null;
+  hideTip();
+}
+
+function tip(id, text) {
+  const el = $(id);
+  if (!el) return;
+  el._tip = text;
+  el.setAttribute("aria-label", "Explain this setting");
+  el.setAttribute("aria-expanded", "false");
+  el.onmouseenter = () => { if (!tipPinned) showTip(el); };
+  el.onmouseleave = () => { if (!tipPinned) hideTip(); };
+  el.onfocus = () => { if (!tipPinned) showTip(el); };
+  el.onblur = () => { if (!tipPinned) hideTip(); };
+  el.onclick = (e) => {
+    // These markers sit inside a <label>; a bare click would toggle the
+    // checkbox that label is for.
+    e.preventDefault();
+    e.stopPropagation();
+    const wasPinned = tipPinned === el;
+    unpinTip();
+    if (!wasPinned) {
+      tipPinned = el;
+      el.setAttribute("aria-expanded", "true");
+      showTip(el);
+    }
+  };
+}
+
+// A pinned bubble is dismissed the way every other popover is, and follows its
+// marker when the panel scrolls under it.
+document.addEventListener("click", unpinTip);
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") unpinTip();
+});
+addEventListener("resize", unpinTip);
+// Scroll events do not bubble, and a capture-phase listener on window does not
+// see them either \u2014 measured, not assumed. The panel that actually scrolls
+// is wired directly so a pinned bubble keeps tracking its marker.
+$("setBox").addEventListener("scroll", () => {
+  if (tipPinned) showTip(tipPinned);
+});
+
+async function openSettings() {
+  if (!conv) return;
+  const thinks = CFG.reasoning_models.includes(conv.model);
+
+  $("setWebSearch").checked = !!conv.web_search;
+  $("setWebFetch").checked = !!conv.web_fetch;
+  $("setToolPrompt").value = conv.tool_prompt || CFG.default_tool_prompt;
+  $("setToolPrompt").placeholder = CFG.default_tool_prompt;
+  $("setCompressPrompt").value =
+    conv.compress_prompt || CFG.default_compress_prompt;
+  $("setCompressPrompt").placeholder = CFG.default_compress_prompt;
+  $("setBudget").value = conv.context_budget_tokens || CFG.context_budget_tokens;
+  $("setSysPrompt").value = conv.system_prompt;
+  $("setMemory").value = (await api("/memory")).text;
+
+  tip("tipModels",
+    "Ids you add appear in the picker and persist in .data/models.json. The "
+    + "lineup from .env is always there and cannot be removed here.");
+  tip("tipSysPrompt",
+    "Applies from the next message. It sits at the front of the cached "
+    + "prefix, so editing it costs one cold turn.");
+  tip("tipBudget",
+    `Per conversation; the default is ${CFG.context_budget_tokens}. When a `
+    + "turn would exceed it, older messages fold into the summary and the "
+    + `last ${CFG.keep_recent_messages} stay verbatim. Set it low to watch `
+    + "compression happen.");
+  tip("tipMemory",
+    "Shared by every conversation and prepended to each request "
+    + "(.data/memory.md). Compression appends facts here; edit or clear "
+    + "them freely.");
+  tip("tipCompressPrompt",
+    "Runs when a conversation outgrows its window. One call yields both the "
+    + "summary, which stays here, and the facts, which go to the long-term "
+    + "memory below."
+    + `\n\nRuns on ${CFG.summary_model}. {transcript} is required; {prior} `
+    + "is the existing summary. Clear the box for the default.");
+  tip("tipWebSearch",
+    "The gateway searches and folds the results into the prompt \u2014 no "
+    + "round trip here. The model decides per turn, so turns that do not "
+    + "need it cost nothing.");
+  tip("tipWebFetch",
+    "Reads a page in full instead of a search snippet, which is usually what "
+    + "settles an exact figure. Billed per use, and larger than a snippet."
+    + (thinks
+        ? `\n\nWith either tool on, ${conv.model} answers through the tool `
+          + "endpoint, which does not stream its reasoning."
+        : ""));
+  tip("tipToolPrompt",
+    "Sent only on turns where a tool is on, right after the system prompt. "
+    + "{tools}, {searches} and {fetches} are placeholders for the caps."
+    + "\n\nWording here moves cost more than it looks: too loose and the "
+    + "model burns its whole budget, too strict and it gives up early. "
+    + "Change it and watch the per-turn cost line.");
+
+  pendingModels = [...CFG.custom_models];
+  renderModelChips();
+  $("setModal").classList.add("open");
+}
+
+// Small single-field writes (the model dropdown) go straight through.
+// The pill says whether search is on *and* whether this model can honour it.
+function updateSearchPill() {
+  const pill = $("searchPill");
+  const names = [];
+  if (conv?.web_search) names.push("search");
+  if (conv?.web_fetch) names.push("fetch");
+  pill.classList.toggle("on", names.length > 0);
+  if (!names.length) return;
+  pill.textContent = "web " + names.join(" + ");
+  pill.style.borderColor = "";
+  pill.style.color = "";
+  pill.title = "Available to the model this turn; the gateway runs them, "
+    + "billed per use";
+}
+
+async function saveSettings(patch) {
+  if (!conv) return;
+  conv = await api("/conversations/" + conv.id, {
+    method: "PATCH", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(patch),
+  });
+  $("modelSel").value = conv.model;   // a settings save can change it too
+  updateSearchPill();
+  renderStats();
+  refreshList();
+}
+
+async function saveSettingsPanel() {
+  const btn = $("setSave");
+  btn.disabled = true;
+  btn.textContent = "Saving…";
+  try {
+    await api("/memory", {
+      method: "PUT", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text: $("setMemory").value }),
+    });
+    CFG = await api("/models", {
+      method: "PUT", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ models: pendingModels }),
+    });
+    await saveSettings({
+      system_prompt: $("setSysPrompt").value,
+      context_budget_tokens: Number($("setBudget").value) || undefined,
+      web_search: $("setWebSearch").checked,
+      web_fetch: $("setWebFetch").checked,
+      tool_prompt: $("setToolPrompt").value,
+      compress_prompt: $("setCompressPrompt").value,
+    });
+    rebuildModelPicker(conv.model);
+    $("setModal").classList.remove("open");
+  } catch (e) {
+    alert("Could not save settings: " + e.message);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "Save";
+  }
+}
+
+/* ------------------------------------------------------------------- wiring */
+
+$("send").onclick = () => {
+  if (streaming) controller?.abort();   // no confirmation: stop means stop
+  else send();
+};
+$("input").addEventListener("keydown", (e) => {
+  if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(); }
+});
+$("newBtn").onclick = newConv;
+$("stats").onclick = () => {
+  const open = $("stats").classList.toggle("open");
+  $("statsToggle").textContent = open ? "hide" : "details";
+};
+$("modelSel").onchange = () => saveSettings({ model: $("modelSel").value });
+
+let searchTimer = null;
+$("search").addEventListener("input", () => {
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(refreshList, 180);
+});
+
+$("settingsBtn").onclick = openSettings;
+$("setCancel").onclick = () => $("setModal").classList.remove("open");
+$("setModal").onclick = (e) => {
+  if (e.target === $("setModal")) $("setModal").classList.remove("open");
+};
+$("setSave").onclick = saveSettingsPanel;
+$("setAddModel").onclick = addModel;
+$("setNewModel").addEventListener("keydown", (e) => {
+  if (e.key === "Enter") { e.preventDefault(); addModel(); }
+});
+$("setPreset").onchange = () => {
+  const preset = $("setPreset").value;
+  if (preset) $("setSysPrompt").value = CFG.presets[preset];
+  $("setPreset").value = "";
+};
+
+(async function init() {
+  CFG = await api("/config");
+  document.title = CFG.app_name;
+  $("appName").textContent = CFG.app_name;
+  rebuildModelPicker(CFG.default_model);
+  for (const name of Object.keys(CFG.presets)) {
+    const o = document.createElement("option");
+    o.value = name; o.textContent = name;
+    $("setPreset").appendChild(o);
+  }
+  const items = await api("/conversations");
+  if (items.length) await openConv(items[0].id); else await newConv();
+})();
+</script>
+</body>
+</html>
