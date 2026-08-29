@@ -1,0 +1,66 @@
+{
+ "license": "CC BY 4.0 (Synthorai)",
+ "selection": "posts published within 60 days of 2026-08-26; paragraphs 60-150 words containing inline code or a number; no tables/code blocks/headings; max 2 per post; seeded sample (seed 20260826)",
+ "segments": [
+  {
+   "segment_id": "tech-00",
+   "domain": "techdoc",
+   "post": "seedance-api-pricing",
+   "text": "The rate, not the tokens. On 1.5-pro the same 5-second clip billed 50,638 tokens with audio on and 50,638 with it off; the list rate doubles from $1.2/M silent to $2.4/M with audio, so soundtracked output costs exactly 2x, cleanly, with no hidden token surcharge. On the 2.0 series audio is part of the model's single rate, so there is no toggle arithmetic to do. If your pipeline adds its own music bed anyway, 1.5-pro silent at $0.0121/s is the quiet bargain of the catalog."
+  },
+  {
+   "segment_id": "tech-01",
+   "domain": "techdoc",
+   "post": "qwen-image-3-cost",
+   "text": "Nine for nine, each cell coherent, billed as one image: $0.03 for the sheet, $0.0033 per usable cell. Alibaba's own demos push the same mechanism harder, packing nine full infographics with text and formulas into one grid. If your workflow needs thumbnails, mood boards, or option sheets rather than nine standalone files, this is a real cost trick: one flat-rate generation replaces nine, and slicing a grid is a one-line crop job."
+  },
+  {
+   "segment_id": "tech-02",
+   "domain": "techdoc",
+   "post": "gemini-3-6-flash-cost",
+   "text": "Flash-Lite is the predictable-cost tier. It never spends reasoning tokens silently, so its bill tracks visible output one-to-one. On the same multi-step math problem Flash-Lite billed $0.00057 against 3.6 Flash's $0.00368 default, roughly 6x cheaper, and it worked the answer out in the open rather than in a hidden reasoning field. At $0.30/M input and $2.50/M output it is the right default for high-volume, latency-sensitive, single-step work; step up to 3.6 Flash when a task needs the reasoning the dial can add back. The tokenizer is unchanged not just across the three new models but back to Gemini 2.5 Flash: identical token counts on English, Chinese, Japanese, Korean, and Python across every generation we checked, so per-language budgets built for 2.5 carry to 3.6 without re-baselining."
+  },
+  {
+   "segment_id": "tech-03",
+   "domain": "techdoc",
+   "post": "kimi-k3-cost-measured",
+   "text": "Two things stand out. The intermediate settings cluster: `low` through `max` bought similar token counts and identical accuracy on this task, so the meaningful switch is binary. And `none` has a real cliff: forced to answer a multi-step arithmetic problem tersely, K3 got it wrong six times out of six, with scattered wrong answers rather than one systematic error. When we did not force a terse format, the model sometimes ignored brevity and worked through the steps in its visible answer instead: correct, but the tokens moved from the reasoning field into the text field rather than disappearing."
+  },
+  {
+   "segment_id": "tech-04",
+   "domain": "techdoc",
+   "post": "image-input-token-cost",
+   "text": "Two factors explain every shape effect we measured, and neither is file size: whether the model counts **area or a bounding grid**, and where its **long-edge downscale threshold** sits. Content and format, meanwhile, moved nothing anywhere: a 512px solid color, noise field, and text page billed identically on every model we measured, as did the same image at 243KB (PNG), 176KB (JPEG), and 174KB (WebP)."
+  },
+  {
+   "segment_id": "tech-05",
+   "domain": "techdoc",
+   "post": "gpt-5-6-prompting-guide",
+   "text": "Silently, and more expensively: GPT-5.6 reasons by default where a 5.5 workload may have had reasoning off. A ported prompt that never sets `reasoning_effort` picks up the 1.5x omission tax at the same rate card. The cache migration runs the other way: 5.5's automatic prefix detection needed no markup but could not be triggered or debugged; on 5.6 the same prompt does nothing until you mark it, and then reports every write in `usage.prompt_tokens_details.cache_write_tokens`, where a miss shows up as a zero in a field you created rather than as silence."
+  },
+  {
+   "segment_id": "tech-06",
+   "domain": "techdoc",
+   "post": "langchain-prompt-caching",
+   "text": "The provider reported the write correctly (`cache_creation_input_tokens: 1875` in the raw response, visible via `r.response_metadata[\"usage\"]`); the standardized mapping just files it under the TTL-bucket key. A cost dashboard watching `cache_creation` will tell you caching is free while the write premium quietly accrues. Trust the raw usage object or know the bucket keys. This is the same class of problem as gateways mis-reporting cache fields, which we audit in Does Your LLM Gateway Lie About Cache?."
+  },
+  {
+   "segment_id": "tech-07",
+   "domain": "techdoc",
+   "post": "kimi-k3-cost-measured",
+   "text": "K3 bills Chinese at 52 tokens per 100 characters, 11% under GLM-5.2 and DeepSeek and less than half of Sonnet 5. Its weak lane is Japanese, where it pays 16-24% more than the other open-weight models. We also confirmed the tokenizer is unchanged across the family: K3, K2.7-code, and K2.5 produced identical counts on all 23 aligned samples, so per-language budgets built for K2 carry over. How tokenizer density compounds with per-token price across nine languages is the subject of our cheapest LLM by language study."
+  },
+  {
+   "segment_id": "tech-08",
+   "domain": "techdoc",
+   "post": "claude-opus-5-cost",
+   "text": "Into reasoning you cannot read. Comparing billed output tokens against the visible answer text, 42-95% of Opus 5's default output spend was hidden thinking, and it fires even on questions that need none: the answer to 17*23 carried 11 thinking tokens behind a 1-token answer, and the 120-word writing task spent about 806 of its 1,031 output tokens deliberating. The thinking content is never returned in any form, no summary, no trace, which puts Opus 5 at the most closed end of the visibility spectrum we mapped in our token usage anatomy study, alongside Fable 5. You can see the count in the usage itemization; you cannot see what it bought."
+  },
+  {
+   "segment_id": "tech-09",
+   "domain": "techdoc",
+   "post": "qwen3-8-max-cost",
+   "text": "The dead zone described in the budget section has a dollar figure on hard tasks. On the deep prime-counting run, the low preset burned its 4,096 thinking tokens, spilled 13,882 more of visible candidate-checking, and still answered wrong: $0.11 for an incorrect answer, versus $0.27 for the default's correct one. The off switch shows the same physics on hard tasks: with thinking disabled outright, both 3.8 and 3.7 poured a 13-15K-token enumeration into the visible answer, one landing the count and one missing it by a single prime, in single shots each. A budget that binds mid-reasoning can raise total spend while lowering quality. Cap thinking on tasks you know are shallow; let deep tasks think."
+  }
+ ]
+}
