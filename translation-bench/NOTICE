@@ -1,0 +1,13 @@
+translation-bench includes data derived from WMT24++:
+
+  google/wmt24pp (https://huggingface.co/datasets/google/wmt24pp)
+  Copyright Google LLC and Unbabel
+  Licensed under the Apache License, Version 2.0
+  (http://www.apache.org/licenses/LICENSE-2.0)
+
+corpus/wmt24pp.json is a seeded subsample (32 segments, 9 language
+pairs) of that dataset; see sample_corpus.py for the exact selection.
+
+corpus/techdoc.json and corpus/ui_strings.json are original works by
+Synthorai, released under CC BY 4.0
+(https://creativecommons.org/licenses/by/4.0/).

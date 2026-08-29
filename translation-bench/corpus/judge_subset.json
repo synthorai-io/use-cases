@@ -1,0 +1,21 @@
+{
+ "note": "Deterministic judging subset (seed 20260826): 2 per WMT24++ domain, 4 techdoc, 4 UI. Generation covers all 52 segments; pairwise judging runs on these 16 per language for budget.",
+ "segment_ids": [
+  "91",
+  "17",
+  "152",
+  "307",
+  "686",
+  "708",
+  "957",
+  "848",
+  "tech-08",
+  "tech-03",
+  "tech-02",
+  "tech-00",
+  "ui-06",
+  "ui-01",
+  "ui-02",
+  "ui-00"
+ ]
+}

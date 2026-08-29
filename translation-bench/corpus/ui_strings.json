@@ -1,0 +1,16 @@
+{
+ "license": "CC BY 4.0 (Synthorai)",
+ "note": "Synthetic UI strings constructed by enumerating known localization hazard classes. Authored and committed before any model was run against them (see git history). Placeholder integrity is graded by script, not by judges.",
+ "segments": [
+  {"segment_id": "ui-00", "domain": "ui", "hazard": "context-free polysemy (verb or noun?)", "text": "Archive"},
+  {"segment_id": "ui-01", "domain": "ui", "hazard": "context-free polysemy (action or state?)", "text": "Back up now"},
+  {"segment_id": "ui-02", "domain": "ui", "hazard": "placeholder integrity + unit", "text": "Retry in {seconds}s"},
+  {"segment_id": "ui-03", "domain": "ui", "hazard": "printf placeholder + plural", "text": "%d files deleted"},
+  {"segment_id": "ui-04", "domain": "ui", "hazard": "plural rules", "text": "1 item selected"},
+  {"segment_id": "ui-05", "domain": "ui", "hazard": "length-sensitive button label", "text": "Save changes"},
+  {"segment_id": "ui-06", "domain": "ui", "hazard": "imperative vs noun label", "text": "Settings"},
+  {"segment_id": "ui-07", "domain": "ui", "hazard": "apology register in errors", "text": "Something went wrong. Your payment was not processed."},
+  {"segment_id": "ui-08", "domain": "ui", "hazard": "brand + placeholder + title case", "text": "Sign in to {workspace_name} with SSO"},
+  {"segment_id": "ui-09", "domain": "ui", "hazard": "empty state, casual register", "text": "Nothing here yet. Invite your team to get started."}
+ ]
+}

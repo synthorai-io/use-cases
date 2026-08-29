@@ -1,0 +1,131 @@
+=== MODEL ARM: win rate vs gpt-5.6-sol (excl ties), per judge and pooled
+
+claude-fable-5
+  zh_CN: pooled 19%  per-judge ['30%', '18%', '9%']
+  zh_TW: pooled 15%  per-judge ['11%', '25%', '9%']
+  ja_JP: pooled 38%  per-judge ['67%', '38%', '11%']
+  ko_KR: pooled 52%  per-judge ['82%', '33%', '40%']
+  fr_FR: pooled 39%  per-judge ['62%', '11%', '44%']
+  de_DE: pooled 32%  per-judge ['50%', '33%', '12%']
+  es_MX: pooled 31%  per-judge ['33%', '9%', '50%']
+  pt_BR: pooled 20%  per-judge ['12%', '11%', '38%']
+  it_IT: pooled 47%  per-judge ['80%', '27%', '33%']
+
+claude-sonnet-5
+  zh_CN: pooled 3%  per-judge ['0%', '0%', '8%']
+  zh_TW: pooled 6%  per-judge ['9%', '0%', '8%']
+  ja_JP: pooled 9%  per-judge ['20%', '0%', '8%']
+  ko_KR: pooled 32%  per-judge ['60%', '18%', '17%']
+  fr_FR: pooled 25%  per-judge ['43%', '12%', '18%']
+  de_DE: pooled 27%  per-judge ['38%', '27%', '17%']
+  es_MX: pooled 28%  per-judge ['25%', '22%', '36%']
+  pt_BR: pooled 10%  per-judge ['11%', '8%', '10%']
+  it_IT: pooled 9%  per-judge ['27%', '0%', '0%']
+
+deepseek-v4-flash-0731
+  zh_CN: pooled 20%  per-judge ['22%', '20%', '18%']
+  zh_TW: pooled 6%  per-judge ['9%', '0%', '8%']
+  ja_JP: pooled 0%  per-judge ['0%', '0%', '0%']
+  ko_KR: pooled 24%  per-judge ['36%', '20%', '17%']
+  fr_FR: pooled 22%  per-judge ['33%', '10%', '23%']
+  de_DE: pooled 19%  per-judge ['57%', '0%', '0%']
+  es_MX: pooled 12%  per-judge ['29%', '0%', '8%']
+  pt_BR: pooled 7%  per-judge ['10%', '11%', '0%']
+  it_IT: pooled 11%  per-judge ['18%', '14%', '0%']
+
+gemini-3.1-pro-preview
+  zh_CN: pooled 17%  per-judge ['12%', '0%', '38%']
+  zh_TW: pooled 22%  per-judge ['40%', '0%', '27%']
+  ja_JP: pooled 24%  per-judge ['33%', '12%', '25%']
+  ko_KR: pooled 45%  per-judge ['44%', '40%', '50%']
+  fr_FR: pooled 30%  per-judge ['50%', '18%', '22%']
+  de_DE: pooled 21%  per-judge ['33%', '10%', '20%']
+  es_MX: pooled 38%  per-judge ['50%', '23%', '40%']
+  pt_BR: pooled 14%  per-judge ['9%', '0%', '33%']
+  it_IT: pooled 25%  per-judge ['50%', '25%', '0%']
+
+gemini-3.7-flash
+  zh_CN: pooled 26%  per-judge ['29%', '12%', '38%']
+  zh_TW: pooled 35%  per-judge ['29%', '38%', '40%']
+  ja_JP: pooled 43%  per-judge ['38%', '57%', '33%']
+  ko_KR: pooled 50%  per-judge ['60%', '40%', '50%']
+  fr_FR: pooled 40%  per-judge ['71%', '10%', '38%']
+  de_DE: pooled 37%  per-judge ['50%', '22%', '38%']
+  es_MX: pooled 39%  per-judge ['60%', '0%', '56%']
+  pt_BR: pooled 8%  per-judge ['0%', '0%', '25%']
+  it_IT: pooled 52%  per-judge ['70%', '36%', '50%']
+
+glm-5.2
+  zh_CN: pooled 9%  per-judge ['9%', '10%', '8%']
+  zh_TW: pooled 3%  per-judge ['8%', '0%', '0%']
+  ja_JP: pooled 10%  per-judge ['22%', '0%', '8%']
+  ko_KR: pooled 6%  per-judge ['9%', '0%', '8%']
+  fr_FR: pooled 7%  per-judge ['11%', '10%', '0%']
+  de_DE: pooled 8%  per-judge ['8%', '17%', '0%']
+  es_MX: pooled 11%  per-judge ['9%', '8%', '17%']
+  pt_BR: pooled 7%  per-judge ['20%', '0%', '0%']
+  it_IT: pooled 12%  per-judge ['27%', '0%', '8%']
+
+kimi-k3
+  zh_CN: pooled 27%  per-judge ['40%', '11%', '30%']
+  zh_TW: pooled 15%  per-judge ['0%', '27%', '18%']
+  ja_JP: pooled 23%  per-judge ['45%', '17%', '8%']
+  ko_KR: pooled 23%  per-judge ['30%', '22%', '18%']
+  fr_FR: pooled 16%  per-judge ['30%', '0%', '18%']
+  de_DE: pooled 24%  per-judge ['40%', '15%', '15%']
+  es_MX: pooled 10%  per-judge ['10%', '8%', '12%']
+  pt_BR: pooled 0%  per-judge ['0%', '0%', '0%']
+  it_IT: pooled 24%  per-judge ['38%', '20%', '12%']
+
+qwen3.8-max
+  zh_CN: pooled 26%  per-judge ['9%', '35%', '34%']
+  zh_TW: pooled 21%  per-judge ['11%', '29%', '23%']
+  ja_JP: pooled 18%  per-judge ['0%', '33%', '20%']
+  ko_KR: pooled 28%  per-judge ['25%', '18%', '40%']
+  fr_FR: pooled 36%  per-judge ['44%', '33%', '30%']
+  de_DE: pooled 17%  per-judge ['12%', '14%', '25%']
+  es_MX: pooled 32%  per-judge ['25%', '27%', '43%']
+  pt_BR: pooled 14%  per-judge ['0%', '0%', '43%']
+  it_IT: pooled 25%  per-judge ['30%', '33%', '12%']
+
+=== MODEL ARM: per-domain pooled win rate (all langs)
+claude-fable-5             news:31% social:24% speech:28% literary:29% techdoc:30% ui:67%
+claude-sonnet-5            news:23% social:6% speech:20% literary:6% techdoc:15% ui:43%
+deepseek-v4-flash-0731     news:10% social:2% speech:22% literary:7% techdoc:10% ui:50%
+gemini-3.1-pro-preview     news:48% social:12% speech:37% literary:33% techdoc:10% ui:77%
+gemini-3.7-flash           news:35% social:18% speech:43% literary:60% techdoc:30% ui:59%
+glm-5.2                    news:8% social:8% speech:9% literary:2% techdoc:3% ui:31%
+kimi-k3                    news:25% social:12% speech:13% literary:4% techdoc:19% ui:62%
+qwen3.8-max                news:42% social:22% speech:25% literary:11% techdoc:19% ui:62%
+
+=== REFERENCE ARM: win rate vs human post-edit (excl ties), pooled
+claude-fable-5             zh_CN:44% zh_TW:100% ja_JP:100% ko_KR:95% fr_FR:100% de_DE:96% es_MX:100% pt_BR:100% it_IT:100%
+gemini-3.1-pro-preview     zh_CN:83% zh_TW:100% ja_JP:91% ko_KR:100% fr_FR:100% de_DE:100% es_MX:96% pt_BR:92% it_IT:96%
+gpt-5.6-sol                zh_CN:86% zh_TW:100% ja_JP:96% ko_KR:100% fr_FR:96% de_DE:100% es_MX:100% pt_BR:100% it_IT:96%
+
+=== PLACEHOLDER INTEGRITY (script-graded, UI strings with placeholders)
+claude-fable-5             broken 0/27
+claude-sonnet-5            broken 0/27
+deepseek-v4-flash-0731     broken 0/27
+gemini-3.1-pro-preview     broken 0/27
+gemini-3.7-flash           broken 0/27
+glm-5.2                    broken 0/27
+gpt-5.6-sol                broken 0/27
+kimi-k3                    broken 0/27
+qwen3.8-max                broken 0/27
+
+=== COST & BURN per model (all 52 segs x 9 langs)
+claude-fable-5             n= 468 cost=$  5.853 reasoning_tokens=     0 $/1M-output-chars=  39.81
+claude-sonnet-5            n= 468 cost=$  1.231 reasoning_tokens=     0 $/1M-output-chars=   8.36
+deepseek-v4-flash-0731     n= 468 cost=$  0.037 reasoning_tokens=     0 $/1M-output-chars=   0.26
+gemini-3.1-pro-preview     n= 468 cost=$ 14.807 reasoning_tokens=1171770 $/1M-output-chars= 104.37
+gemini-3.7-flash           n= 468 cost=$  2.149 reasoning_tokens=505443 $/1M-output-chars=  14.46
+glm-5.2                    n= 466 cost=$  0.361 reasoning_tokens=     0 $/1M-output-chars=   2.48
+gpt-5.6-sol                n= 468 cost=$  2.045 reasoning_tokens=     0 $/1M-output-chars=  13.70
+kimi-k3                    n= 468 cost=$  1.203 reasoning_tokens=     0 $/1M-output-chars=   8.37
+qwen3.8-max                n= 468 cost=$  0.487 reasoning_tokens=     0 $/1M-output-chars=   3.18
+
+=== JUDGE NOISE: order-consistency per judge
+claude-sonnet-5            agree 1014/1368 hard-flips 128 (9%)
+gpt-5.6-luna               agree 1131/1404 hard-flips 266 (19%)
+gemini-3.1-pro-preview     agree 1170/1403 hard-flips 181 (13%)
