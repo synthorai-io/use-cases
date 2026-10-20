@@ -10,6 +10,7 @@ read top to bottom, run locally in a couple of minutes, and copy pieces from.
 | [`agent-tracing/`](#agent-tracing) | A support agent traced with request headers, and ten production problems to find with the traces | Python, an API key | [Trace an LLM agent](https://synthorai.io/use-cases/agent-tracing/) |
 | [`coding-agent-spend/`](#coding-agent-spend) | Claude Code run through the gateway, with its cost split by agent | Python, Claude Code, an API key | [Claude Code cost by sub-agent](https://synthorai.io/use-cases/coding-agent-spend/) |
 | [`agent-log-tools/`](#agent-log-tools) | The request log as tools for your own agent, over MCP, next to the REST call that needs no model | Python, an API key and a read-only admin key | [Give your agent log tools](https://synthorai.io/use-cases/agent-log-tools/) |
+| [`prompt-library/`](#prompt-library) | The support agent's prompts kept in the prompt library: called by id, shipped by moving a label, rolled out to a share of traffic, and tested before they ship | Python, an API key and an admin key | [Prompt versioning](https://synthorai.io/use-cases/prompt-versioning/) |
 | [`translation-bench/`](#translation-bench) | A translation benchmark with its corpus, runners and raw results | Python, an API key | [Best LLM for Translation](https://synthorai.io/blog/llm-translation-quality/) |
 
 ## Setup
@@ -115,6 +116,40 @@ framework and no MCP library in it: MCP here is one HTTP request per call.
 To ask the same log questions yourself, with no program at all, see
 [Ask Claude about your LLM logs](https://synthorai.io/use-cases/agent-log-questions/).
 [Read more](./agent-log-tools/)
+
+### prompt-library
+
+The support agent from `agent-tracing/` with its prompts moved out of the code
+and into the Synthorai prompt library. The code calls a prompt by id, and the
+library decides which version answers, so a prompt change ships without a
+redeploy.
+
+- `setup.py` creates the two prompts and their versions through the
+  management API and is safe to run again. `call.py` calls one prompt id by
+  production, by label and by version, on Chat Completions, Responses and
+  Messages, and checks that a call by id sends the same tokens as the same
+  request written inline.
+- `ship.py` moves the production label and times how long live calls take to
+  get the new version. `errors.py` shows what five calls that cannot be served
+  get back, and that none of them is billed.
+- `rollout.py` sends 10% and then 50% of production to another version and
+  checks the split: a session or an end user keeps one version, and a call
+  pinned to a version is never moved. The per-version stats show what each
+  version costs. `effort.py` measures what a `reasoning_effort` sent with the
+  call does to cost, latency and the answers.
+- `evals.py` tests a shorter prompt against the current one on test sets with
+  pattern and model-judged checks: three runs on each set, and one test fixed
+  in advance on rows no earlier run had seen.
+- `migrate.py` serves an OpenAI Responses call with `prompt: {id: "pmpt_..."}`
+  from the library, unchanged. `webhook.py` verifies the signature of a
+  prompt-change webhook.
+
+Every model call is one row in `results/`, with the version that answered and
+its billed cost. It is the code behind three guides:
+[versioning](https://synthorai.io/use-cases/prompt-versioning/),
+[rollout](https://synthorai.io/use-cases/prompt-rollout/) and
+[testing](https://synthorai.io/use-cases/prompt-testing/).
+[Read more](./prompt-library/)
 
 ### translation-bench
 
