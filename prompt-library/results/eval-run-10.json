@@ -1,0 +1,1349 @@
+{
+ "baseline": 1,
+ "candidate": 2,
+ "checked": 40,
+ "created_at": "2026-10-19T16:58:03Z",
+ "done": 40,
+ "id": 10,
+ "passed": 39,
+ "results": {
+  "checks": [
+   {
+    "type": "regex",
+    "value": "\\bA-\\d{5}\\b"
+   },
+   {
+    "model": "claude-sonnet-5-5",
+    "type": "judge",
+    "value": "The answer addresses the customer's question."
+   }
+  ],
+  "rows": [
+   {
+    "baseline": {
+     "cost": 0.0001347,
+     "latencyMs": 19921,
+     "ok": true,
+     "text": "Sorry the dock isn\u2019t charging your laptop. Yes, you can return it from order A-48213; use the returns option in your account for instructions."
+    },
+    "candidate": {
+     "cost": 0.0001602,
+     "latencyMs": 6889,
+     "ok": true,
+     "text": "I\u2019m sorry the dock isn\u2019t charging your laptop. You can request a return for order A-48213 by contacting our support team and explaining the issue; they can confirm the return options for your order."
+    },
+    "checks": [
+     {
+      "detail": "",
+      "pass": true,
+      "type": "regex",
+      "value": "\\bA-\\d{5}\\b"
+     },
+     {
+      "detail": "The answer directly responds to the customer's question about returning the dock by saying they can request a return for order A-48213 and pointing them to support for the options.",
+      "pass": true,
+      "type": "judge",
+      "value": "The answer addresses the customer's question."
+     }
+    ],
+    "variables": {
+     "customer_message": "My order A-48213 arrived but the dock does not charge my laptop. Can I send it back?",
+     "order_status": "delivered on 2026-09-28",
+     "product": "home electronics"
+    }
+   },
+   {
+    "baseline": {
+     "cost": 7.57e-05,
+     "latencyMs": 3365,
+     "ok": true,
+     "text": "Order A-50977 is still in transit and shipped on October 1, 2026. I don\u2019t have a more precise location available; please check the tracking link in your shipping confirmation for the latest update."
+    },
+    "candidate": {
+     "cost": 0.0001157,
+     "latencyMs": 4400,
+     "ok": true,
+     "text": "Order A-50977 is currently in transit and was shipped on October 1, 2026. I don\u2019t have a more specific location available; please check the tracking link in your shipping confirmation for the latest update."
+    },
+    "checks": [
+     {
+      "detail": "",
+      "pass": true,
+      "type": "regex",
+      "value": "\\bA-\\d{5}\\b"
+     },
+     {
+      "detail": "The answer directly addresses the customer's question by giving the order's current status (in transit) and ship date, and honestly says no more specific location is available while pointing to the tracking link.",
+      "pass": true,
+      "type": "judge",
+      "value": "The answer addresses the customer's question."
+     }
+    ],
+    "variables": {
+     "customer_message": "Where is order A-50977? It has been a week.",
+     "order_status": "in transit, shipped on 2026-10-01",
+     "product": "home electronics"
+    }
+   },
+   {
+    "baseline": {
+     "cost": 7.8e-05,
+     "latencyMs": 3857,
+     "ok": true,
+     "text": "Sorry the screen protector arrived cracked, Order A-51230. Please reply with a photo of the damage and packaging so we can help with the next steps."
+    },
+    "candidate": {
+     "cost": 7e-05,
+     "latencyMs": 6287,
+     "ok": true,
+     "text": "I\u2019m sorry the screen protector arrived cracked. Please send us a photo of the damage and packaging, and we\u2019ll review the next steps for order A-51230."
+    },
+    "checks": [
+     {
+      "detail": "",
+      "pass": true,
+      "type": "regex",
+      "value": "\\bA-\\d{5}\\b"
+     },
+     {
+      "detail": "The answer responds to the cracked screen protector on order A-51230 by apologizing and telling the customer to send photos so the issue can be reviewed, which gives a concrete next step.",
+      "pass": true,
+      "type": "judge",
+      "value": "The answer addresses the customer's question."
+     }
+    ],
+    "variables": {
+     "customer_message": "Order A-51230 came with a cracked screen protector. What now?",
+     "order_status": "delivered on 2026-10-03",
+     "product": "home electronics"
+    }
+   },
+   {
+    "baseline": {
+     "cost": 7.22e-05,
+     "latencyMs": 4945,
+     "ok": true,
+     "text": "Order A-49902 is in transit and shipped on 2026-10-05. The current status doesn\u2019t include an estimated delivery date; please check the carrier\u2019s tracking page for the latest estimate."
+    },
+    "candidate": {
+     "cost": 0.0001052,
+     "latencyMs": 7286,
+     "ok": true,
+     "text": "Order A-49902 is in transit and was marked shipped on October 5, 2026. I don\u2019t have an estimated delivery date available\u2014please check the tracking link in your shipping confirmation for the latest update."
+    },
+    "checks": [
+     {
+      "detail": "",
+      "pass": true,
+      "type": "regex",
+      "value": "\\bA-\\d{5}\\b"
+     },
+     {
+      "detail": "The answer responds directly to the delivery question by giving the order's current status (in transit, shipped Oct 5, 2026), saying plainly that no estimated delivery date is available, and pointing the customer to tracking for updates.",
+      "pass": true,
+      "type": "judge",
+      "value": "The answer addresses the customer's question."
+     }
+    ],
+    "variables": {
+     "customer_message": "Can you tell me when order A-49902 will be delivered?",
+     "order_status": "in transit, shipped on 2026-10-05",
+     "product": "home electronics"
+    }
+   },
+   {
+    "baseline": {
+     "cost": 4.25e-05,
+     "latencyMs": 10115,
+     "ok": true,
+     "text": "Yes, return for order A-47755 was received on October 6, 2026."
+    },
+    "candidate": {
+     "cost": 4.9e-05,
+     "latencyMs": 6866,
+     "ok": true,
+     "text": "Yes, we\u2019ve received your return for order A-47755. It was marked as received on October 6, 2026."
+    },
+    "checks": [
+     {
+      "detail": "",
+      "pass": true,
+      "type": "regex",
+      "value": "\\bA-\\d{5}\\b"
+     },
+     {
+      "detail": "The answer directly confirms the return for order A-47755 arrived, citing the October 6, 2026 received date from the order status.",
+      "pass": true,
+      "type": "judge",
+      "value": "The answer addresses the customer's question."
+     }
+    ],
+    "variables": {
+     "customer_message": "I returned order A-47755 last week. Has it arrived?",
+     "order_status": "return received on 2026-10-06",
+     "product": "home electronics"
+    }
+   },
+   {
+    "baseline": {
+     "cost": 0.0001964,
+     "latencyMs": 8521,
+     "ok": true,
+     "text": "Order A-52018 is still processing and hasn\u2019t shipped. I\u2019ll request cancellation since you ordered the wrong colour."
+    },
+    "candidate": {
+     "cost": 0.0001029,
+     "latencyMs": 4578,
+     "ok": true,
+     "text": "Your order A-52018 is still processing and hasn\u2019t shipped, so cancellation may still be possible. Please contact our support team as soon as possible to request cancellation."
+    },
+    "checks": [
+     {
+      "detail": "",
+      "pass": true,
+      "type": "regex",
+      "value": "\\bA-\\d{5}\\b"
+     },
+     {
+      "detail": "The answer responds directly to the cancellation request by noting the order hasn't shipped, so cancellation may be possible, and by telling the customer how to proceed.",
+      "pass": true,
+      "type": "judge",
+      "value": "The answer addresses the customer's question."
+     }
+    ],
+    "variables": {
+     "customer_message": "Please cancel order A-52018, I ordered the wrong colour.",
+     "order_status": "processing, not shipped",
+     "product": "home electronics"
+    }
+   },
+   {
+    "baseline": {
+     "cost": 7.29e-05,
+     "latencyMs": 4089,
+     "ok": true,
+     "text": "Sorry, the keyboard in order A-50311 arrived with two keycaps missing. Please tell us which keycaps are missing and send a photo of the keyboard so we can look into this."
+    },
+    "candidate": {
+     "cost": 6.89e-05,
+     "latencyMs": 3877,
+     "ok": true,
+     "text": "I\u2019m sorry the keyboard arrived with two keycaps missing. Please send us a photo of the keyboard and its packaging so we can look into the best way to resolve this for order A-50311."
+    },
+    "checks": [
+     {
+      "detail": "",
+      "pass": true,
+      "type": "regex",
+      "value": "\\bA-\\d{5}\\b"
+     },
+     {
+      "detail": "The answer acknowledges the missing keycaps on the keyboard in order A-50311 and responds with a concrete next step (requesting photos) toward resolution.",
+      "pass": true,
+      "type": "judge",
+      "value": "The answer addresses the customer's question."
+     }
+    ],
+    "variables": {
+     "customer_message": "The keyboard in order A-50311 is missing two keycaps.",
+     "order_status": "delivered on 2026-10-02",
+     "product": "home electronics"
+    }
+   },
+   {
+    "baseline": {
+     "cost": 0.0001006,
+     "latencyMs": 3072,
+     "ok": true,
+     "text": "I\u2019m sorry\u2014order A-48890 is marked delivered on October 4, 2026, but you haven\u2019t received it. Please check nearby delivery spots and with household members or neighbors; if it\u2019s still missing, let us know so we can investigate with the carrier."
+    },
+    "candidate": {
+     "cost": 0.0001066,
+     "latencyMs": 5631,
+     "ok": true,
+     "text": "I\u2019m sorry your order A-48890 hasn\u2019t turned up. Please check around your delivery area and with household members or neighbors; if it\u2019s still missing, reply here and we\u2019ll investigate the delivery with the carrier."
+    },
+    "checks": [
+     {
+      "detail": "",
+      "pass": true,
+      "type": "regex",
+      "value": "\\bA-\\d{5}\\b"
+     },
+     {
+      "detail": "The answer responds directly to the customer's report of a missing order marked delivered, apologizes, gives steps to check, and offers to investigate with the carrier.",
+      "pass": true,
+      "type": "judge",
+      "value": "The answer addresses the customer's question."
+     }
+    ],
+    "variables": {
+     "customer_message": "Order A-48890 says delivered but nothing came.",
+     "order_status": "delivered on 2026-10-04",
+     "product": "home electronics"
+    }
+   },
+   {
+    "baseline": {
+     "cost": 0.0001085,
+     "latencyMs": 4724,
+     "ok": true,
+     "text": "Order A-52240 is processing and hasn\u2019t shipped. Which cable would you like to add? I can check whether the order can still be updated."
+    },
+    "candidate": {
+     "cost": 8.75e-05,
+     "latencyMs": 5498,
+     "ok": true,
+     "text": "Your order is still processing, so it may be possible to add the cable before it ships. Please share the cable name or model and quantity, and we can check whether order A-52240 can be updated."
+    },
+    "checks": [
+     {
+      "detail": "",
+      "pass": true,
+      "type": "regex",
+      "value": "\\bA-\\d{5}\\b"
+     },
+     {
+      "detail": "The answer directly responds to whether a cable can be added to order A-52240, noting the order is still processing so it may be possible, and asks for the details needed to proceed.",
+      "pass": true,
+      "type": "judge",
+      "value": "The answer addresses the customer's question."
+     }
+    ],
+    "variables": {
+     "customer_message": "Can I add a cable to order A-52240 before it ships?",
+     "order_status": "processing, not shipped",
+     "product": "home electronics"
+    }
+   },
+   {
+    "baseline": {
+     "cost": 7.67e-05,
+     "latencyMs": 5684,
+     "ok": true,
+     "text": "I\u2019m sorry about the duplicate charge on order A-49127. Please check whether both charges have posted or if one is still pending, and let us know; pending authorizations may drop off automatically."
+    },
+    "candidate": {
+     "cost": 0.0001077,
+     "latencyMs": 6314,
+     "ok": true,
+     "text": "I\u2019m sorry about the duplicate charge on order A-49127. Please check whether the second charge is still pending; if both have posted, send us the charge amounts and dates plus the last four digits of the card (never the full card number), and we\u2019ll investigate."
+    },
+    "checks": [
+     {
+      "detail": "",
+      "pass": true,
+      "type": "regex",
+      "value": "\\bA-\\d{5}\\b"
+     },
+     {
+      "detail": "The answer directly addresses the double-charge complaint on order A-49127 by apologizing, suggesting a check on pending status, and requesting the details needed to investigate.",
+      "pass": true,
+      "type": "judge",
+      "value": "The answer addresses the customer's question."
+     }
+    ],
+    "variables": {
+     "customer_message": "Order A-49127 was charged twice on my card.",
+     "order_status": "delivered on 2026-09-21",
+     "product": "home electronics"
+    }
+   },
+   {
+    "baseline": {
+     "cost": 9.88e-05,
+     "latencyMs": 4656,
+     "ok": true,
+     "text": "I\u2019m sorry the monitor from order A-50455 has a dead pixel. Please send us a photo showing the pixel and we\u2019ll help with the next steps for a replacement or return."
+    },
+    "candidate": {
+     "cost": 9.38e-05,
+     "latencyMs": 5140,
+     "ok": true,
+     "text": "I\u2019m sorry the monitor from order A-50455 arrived with a dead pixel. Please send us a clear photo of the affected screen, and we\u2019ll review the available options to help resolve this."
+    },
+    "checks": [
+     {
+      "detail": "",
+      "pass": true,
+      "type": "regex",
+      "value": "\\bA-\\d{5}\\b"
+     },
+     {
+      "detail": "The answer responds directly to the customer's dead pixel complaint about order A-50455, apologizes, and gives a next step (send a photo) toward resolving it.",
+      "pass": true,
+      "type": "judge",
+      "value": "The answer addresses the customer's question."
+     }
+    ],
+    "variables": {
+     "customer_message": "The monitor from order A-50455 has a dead pixel.",
+     "order_status": "delivered on 2026-09-30",
+     "product": "home electronics"
+    }
+   },
+   {
+    "baseline": {
+     "cost": 3.66e-05,
+     "latencyMs": 1851,
+     "ok": true,
+     "text": "Order A-48002 was delivered on 2026-09-26. Please return the headphones and place a new order for the colour you want; once the return has been checked, any refund will go to your original payment method."
+    },
+    "candidate": {
+     "cost": 7.96e-05,
+     "latencyMs": 4850,
+     "ok": true,
+     "text": "I can help with an exchange for order A-48002. Which colour would you like? Exchange options depend on availability and order eligibility."
+    },
+    "checks": [
+     {
+      "detail": "",
+      "pass": true,
+      "type": "regex",
+      "value": "\\bA-\\d{5}\\b"
+     },
+     {
+      "detail": "The answer engages directly with the customer's exchange request for order A-48002 and asks which colour they want, moving the request forward.",
+      "pass": true,
+      "type": "judge",
+      "value": "The answer addresses the customer's question."
+     }
+    ],
+    "variables": {
+     "customer_message": "I want to exchange the headphones in order A-48002 for another colour.",
+     "order_status": "delivered on 2026-09-26",
+     "product": "home electronics"
+    }
+   },
+   {
+    "baseline": {
+     "cost": 9.81e-05,
+     "latencyMs": 4614,
+     "ok": true,
+     "text": "Order A-51777 is marked in transit and was shipped on September 29, 2026. Customs clearance can cause delays; please contact the carrier with your tracking number for the latest update."
+    },
+    "candidate": {
+     "cost": 0.0001141,
+     "latencyMs": 4919,
+     "ok": true,
+     "text": "I\u2019m sorry Order A-51777 has been delayed in customs. Customs processing can take several days, and tracking may not update until the parcel is released. Please check with the carrier for any customs notices or information they need to clear it."
+    },
+    "checks": [
+     {
+      "detail": "",
+      "pass": true,
+      "type": "regex",
+      "value": "\\bA-\\d{5}\\b"
+     },
+     {
+      "detail": "The answer responds directly to the customer's concern about Order A-51777 being stuck in customs, apologizing, explaining why delays happen, and suggesting the next step of checking with the carrier.",
+      "pass": true,
+      "type": "judge",
+      "value": "The answer addresses the customer's question."
+     }
+    ],
+    "variables": {
+     "customer_message": "Order A-51777 has been stuck in customs for days.",
+     "order_status": "in transit, shipped on 2026-09-29",
+     "product": "home electronics"
+    }
+   },
+   {
+    "baseline": {
+     "cost": 8.96e-05,
+     "latencyMs": 5536,
+     "ok": true,
+     "text": "Yes, we can arrange an invoice for order A-49540 with your company name. Please send the exact company name and any billing details you\u2019d like included."
+    },
+    "candidate": {
+     "cost": 6.01e-05,
+     "latencyMs": 6632,
+     "ok": true,
+     "text": "Yes, we can help with an invoice for order A-49540. Please send your company\u2019s legal name and billing address, plus any tax ID that should appear on it."
+    },
+    "checks": [
+     {
+      "detail": "",
+      "pass": true,
+      "type": "regex",
+      "value": "\\bA-\\d{5}\\b"
+     },
+     {
+      "detail": "The answer directly responds to the customer's request by confirming an invoice with the company name is possible and stating what details are needed to issue it.",
+      "pass": true,
+      "type": "judge",
+      "value": "The answer addresses the customer's question."
+     }
+    ],
+    "variables": {
+     "customer_message": "Can I get an invoice with my company name for order A-49540?",
+     "order_status": "delivered on 2026-09-18",
+     "product": "home electronics"
+    }
+   },
+   {
+    "baseline": {
+     "cost": 0.0001049,
+     "latencyMs": 5661,
+     "ok": true,
+     "text": "Sorry the charger in order A-50888 is for the wrong country. Which country do you need it for? I\u2019ll help you find the right option."
+    },
+    "candidate": {
+     "cost": 7.59e-05,
+     "latencyMs": 4465,
+     "ok": true,
+     "text": "I\u2019m sorry the charger in order A-50888 has the wrong plug for your country. Which country or plug type do you need? I can help you with the available exchange or return options."
+    },
+    "checks": [
+     {
+      "detail": "",
+      "pass": true,
+      "type": "regex",
+      "value": "\\bA-\\d{5}\\b"
+     },
+     {
+      "detail": "The answer acknowledges the wrong-country charger in order A-50888, asks which country or plug type is needed, and offers exchange or return options, which directly addresses the customer's issue.",
+      "pass": true,
+      "type": "judge",
+      "value": "The answer addresses the customer's question."
+     }
+    ],
+    "variables": {
+     "customer_message": "The charger in order A-50888 is for the wrong country.",
+     "order_status": "delivered on 2026-10-02",
+     "product": "home electronics"
+    }
+   },
+   {
+    "baseline": {
+     "cost": 8.22e-05,
+     "latencyMs": 6182,
+     "ok": true,
+     "text": "Order A-53104 is in transit and shipped on October 6. I can\u2019t confirm whether it will arrive before Saturday; please check the tracking link for the carrier\u2019s latest delivery estimate."
+    },
+    "candidate": {
+     "cost": 0.0001087,
+     "latencyMs": 4846,
+     "ok": true,
+     "text": "Order A-53104 is in transit and was marked shipped on October 6, 2026. The status I can see doesn\u2019t include an estimated delivery date, so I can\u2019t confirm whether it will arrive before Saturday; please check the carrier\u2019s tracking page for the latest estimate."
+    },
+    "checks": [
+     {
+      "detail": "",
+      "pass": true,
+      "type": "regex",
+      "value": "\\bA-\\d{5}\\b"
+     },
+     {
+      "detail": "The answer responds to the customer's question about arrival by giving the order's status and ship date, and it states that it cannot confirm delivery before Saturday because no estimated delivery date is available, then directs them to carrier tracking.",
+      "pass": true,
+      "type": "judge",
+      "value": "The answer addresses the customer's question."
+     }
+    ],
+    "variables": {
+     "customer_message": "When will order A-53104 get here? I need it for a trip on Saturday.",
+     "order_status": "in transit, shipped on 2026-10-06",
+     "product": "home electronics"
+    }
+   },
+   {
+    "baseline": {
+     "cost": 4.89e-05,
+     "latencyMs": 5772,
+     "ok": true,
+     "text": "Order A-52677 is still processing and has not shipped yet. I can\u2019t confirm a ship date, but you\u2019ll receive a shipping update once it\u2019s dispatched."
+    },
+    "candidate": {
+     "cost": 5.19e-05,
+     "latencyMs": 4446,
+     "ok": true,
+     "text": "Order A-52677 is still processing and hasn\u2019t shipped yet. I can\u2019t confirm a shipping date, but you\u2019ll receive a tracking update once it ships."
+    },
+    "checks": [
+     {
+      "detail": "",
+      "pass": true,
+      "type": "regex",
+      "value": "\\bA-\\d{5}\\b"
+     },
+     {
+      "detail": "The answer directly responds to the customer's question about order A-52677 by confirming it hasn't shipped, explaining that no shipping date can be confirmed, and noting that a tracking update will arrive once it ships.",
+      "pass": true,
+      "type": "judge",
+      "value": "The answer addresses the customer's question."
+     }
+    ],
+    "variables": {
+     "customer_message": "Order A-52677 still shows processing. When does it ship?",
+     "order_status": "processing, not shipped",
+     "product": "home electronics"
+    }
+   },
+   {
+    "baseline": {
+     "cost": 9.26e-05,
+     "latencyMs": 4758,
+     "ok": true,
+     "text": "Order A-53390 is in transit and shipped on October 7, 2026. I can\u2019t confirm whether it will arrive before the weekend from the current status; please check the tracking link for the latest delivery estimate."
+    },
+    "candidate": {
+     "cost": 9.21e-05,
+     "latencyMs": 4257,
+     "ok": true,
+     "text": "Order A-53390 is in transit and was shipped on October 7, 2026. I don\u2019t have an estimated delivery date, so I can\u2019t confirm whether it will arrive before the weekend; please check the tracking details for the latest estimate."
+    },
+    "checks": [
+     {
+      "detail": "",
+      "pass": true,
+      "type": "regex",
+      "value": "\\bA-\\d{5}\\b"
+     },
+     {
+      "detail": "The answer directly addresses the question by giving the order's status and explaining that it can't confirm arrival before the weekend because no estimated delivery date is available, then pointing to tracking.",
+      "pass": true,
+      "type": "judge",
+      "value": "The answer addresses the customer's question."
+     }
+    ],
+    "variables": {
+     "customer_message": "Is order A-53390 going to arrive before the weekend?",
+     "order_status": "in transit, shipped on 2026-10-07",
+     "product": "home electronics"
+    }
+   },
+   {
+    "baseline": {
+     "cost": 7.68e-05,
+     "latencyMs": 5440,
+     "ok": true,
+     "text": "Order A-51902 is in transit and shipped on October 2, but its tracking hasn\u2019t updated in four days. Carrier scans can be delayed; please check the tracking page again later or contact the carrier for the latest details."
+    },
+    "candidate": {
+     "cost": 9.88e-05,
+     "latencyMs": 6774,
+     "ok": true,
+     "text": "I\u2019m sorry the tracking for order A-51902 hasn\u2019t updated in four days; its current status is still in transit, and scans can sometimes be delayed between facilities. Please check the carrier\u2019s tracking page again, and if there\u2019s still no update, contact us with the tracking number so we can help investigate."
+    },
+    "checks": [
+     {
+      "detail": "",
+      "pass": true,
+      "type": "regex",
+      "value": "\\bA-\\d{5}\\b"
+     },
+     {
+      "detail": "The answer directly addresses the stalled tracking for order A-51902 by confirming its in-transit status, explaining possible scan delays, and giving next steps.",
+      "pass": true,
+      "type": "judge",
+      "value": "The answer addresses the customer's question."
+     }
+    ],
+    "variables": {
+     "customer_message": "The tracking for order A-51902 has not moved in four days.",
+     "order_status": "in transit, shipped on 2026-10-02",
+     "product": "home electronics"
+    }
+   },
+   {
+    "baseline": {
+     "cost": 0.0001131,
+     "latencyMs": 3984,
+     "ok": true,
+     "text": "Order A-53518 is still processing and hasn\u2019t shipped, so the delivery address may still be changeable. Please contact us as soon as possible with the full office address so we can check whether it can be updated before dispatch."
+    },
+    "candidate": {
+     "cost": 7.51e-05,
+     "latencyMs": 6327,
+     "ok": true,
+     "text": "Since order A-53518 hasn\u2019t shipped yet, we may be able to change the delivery address. Please send the complete office address, and we\u2019ll check whether it can be updated before dispatch."
+    },
+    "checks": [
+     {
+      "detail": "",
+      "pass": true,
+      "type": "regex",
+      "value": "\\bA-\\d{5}\\b"
+     },
+     {
+      "detail": "The answer directly addresses the customer's question by explaining that the delivery address may be changeable since the order hasn't shipped, and it asks for the office address to proceed.",
+      "pass": true,
+      "type": "judge",
+      "value": "The answer addresses the customer's question."
+     }
+    ],
+    "variables": {
+     "customer_message": "Can order A-53518 be delivered to my office instead of my home?",
+     "order_status": "processing, not shipped",
+     "product": "home electronics"
+    }
+   },
+   {
+    "baseline": {
+     "cost": 0.0001373,
+     "latencyMs": 5616,
+     "ok": true,
+     "text": "To return the speaker from order A-50126, open the order in your account and choose the return option for the speaker, noting that it is too quiet. Once the return is checked, any refund goes to your original payment method."
+    },
+    "candidate": {
+     "cost": 9.78e-05,
+     "latencyMs": 7294,
+     "ok": true,
+     "text": "Sorry the speaker isn\u2019t loud enough. To request a return, open order A-50126 in your account, choose the speaker, and select \u201cReturn item\u201d; follow the instructions provided for packaging and shipping. If you don\u2019t see a return option, contact us with your order number and we\u2019ll help."
+    },
+    "checks": [
+     {
+      "detail": "",
+      "pass": true,
+      "type": "regex",
+      "value": "\\bA-\\d{5}\\b"
+     },
+     {
+      "detail": "The answer directly explains how to return the speaker from order A-50126, including the steps to start the return and what to do if the option isn't available.",
+      "pass": true,
+      "type": "judge",
+      "value": "The answer addresses the customer's question."
+     }
+    ],
+    "variables": {
+     "customer_message": "How do I return the speaker from order A-50126? It is too quiet.",
+     "order_status": "delivered on 2026-10-01",
+     "product": "home electronics"
+    }
+   },
+   {
+    "baseline": {
+     "cost": 7.12e-05,
+     "latencyMs": 10028,
+     "ok": true,
+     "text": "Order A-49318 was received on 2026-10-04. Once the return has been checked, the refund will go to your original payment method."
+    },
+    "candidate": {
+     "cost": 0.0001547,
+     "latencyMs": 7027,
+     "ok": true,
+     "text": "I\u2019m sorry you haven\u2019t received an update. Our records show the return for order A-49318 was received on October 4, 2026; please check your email and original payment method for any updates."
+    },
+    "checks": [
+     {
+      "detail": "",
+      "pass": true,
+      "type": "regex",
+      "value": "\\bA-\\d{5}\\b"
+     },
+     {
+      "detail": "The answer responds to the customer's concern by confirming the return was received on October 4, 2026, and directing them to check for updates, which addresses their lack of news about the return.",
+      "pass": true,
+      "type": "judge",
+      "value": "The answer addresses the customer's question."
+     }
+    ],
+    "variables": {
+     "customer_message": "I sent back order A-49318 two weeks ago and have heard nothing.",
+     "order_status": "return received on 2026-10-04",
+     "product": "home electronics"
+    }
+   },
+   {
+    "baseline": {
+     "cost": 0.0001208,
+     "latencyMs": 7339,
+     "ok": true,
+     "text": "Yes, you can return the unopened mouse from order A-51045. Once the return has been checked, any refund will go to your original payment method."
+    },
+    "candidate": {
+     "cost": 0.0001493,
+     "latencyMs": 11460,
+     "ok": true,
+     "text": "Because the mouse is unopened, it may be eligible for return, depending on the return window for order A-51045. Open the order in your account and select **Start a return** to check eligibility and get the return instructions."
+    },
+    "checks": [
+     {
+      "detail": "",
+      "pass": true,
+      "type": "regex",
+      "value": "\\bA-\\d{5}\\b"
+     },
+     {
+      "detail": "The answer directly addresses whether the unopened mouse can be returned, noting it may be eligible depending on the return window and giving steps to start the return.",
+      "pass": true,
+      "type": "judge",
+      "value": "The answer addresses the customer's question."
+     }
+    ],
+    "variables": {
+     "customer_message": "Can I return the unopened mouse from order A-51045?",
+     "order_status": "delivered on 2026-09-27",
+     "product": "home electronics"
+    }
+   },
+   {
+    "baseline": {
+     "cost": 0.0001053,
+     "latencyMs": 4140,
+     "ok": true,
+     "text": "For order A-52833, the recipient can request a return, but we\u2019ll need to check whether it\u2019s eligible under our return policy. Please have them contact us with the order number."
+    },
+    "candidate": {
+     "cost": 0.0001063,
+     "latencyMs": 5030,
+     "ok": true,
+     "text": "The recipient may be able to return it, depending on the item and our return eligibility rules. Please have them contact us with order A-52833 and the item details so we can check the available options."
+    },
+    "checks": [
+     {
+      "detail": "",
+      "pass": true,
+      "type": "regex",
+      "value": "\\bA-\\d{5}\\b"
+     },
+     {
+      "detail": "The answer directly responds to whether a gift recipient can return the order, saying they may be able to and explaining how to proceed with the order number.",
+      "pass": true,
+      "type": "judge",
+      "value": "The answer addresses the customer's question."
+     }
+    ],
+    "variables": {
+     "customer_message": "Order A-52833 was a gift. Can the person who got it return it?",
+     "order_status": "delivered on 2026-10-05",
+     "product": "home electronics"
+    }
+   },
+   {
+    "baseline": {
+     "cost": 0.0001464,
+     "latencyMs": 6894,
+     "ok": true,
+     "text": "For order A-48677, I can\u2019t confirm whether the original box is required from the order details available. Please check the return instructions before shipping it, and use protective packaging to prevent damage."
+    },
+    "candidate": {
+     "cost": 0.0001494,
+     "latencyMs": 8926,
+     "ok": true,
+     "text": "You may not need the original box, but please check the return instructions for order A-48677 in your account, as packaging requirements can vary by item. If it isn\u2019t required, pack the item securely and include its accessories."
+    },
+    "checks": [
+     {
+      "detail": "",
+      "pass": true,
+      "type": "regex",
+      "value": "\\bA-\\d{5}\\b"
+     },
+     {
+      "detail": "The answer directly addresses whether the original box is needed, saying it may not be required, that requirements vary by item, and how to pack the item if it isn't.",
+      "pass": true,
+      "type": "judge",
+      "value": "The answer addresses the customer's question."
+     }
+    ],
+    "variables": {
+     "customer_message": "Do I need the original box to return order A-48677?",
+     "order_status": "delivered on 2026-09-24",
+     "product": "home electronics"
+    }
+   },
+   {
+    "baseline": {
+     "cost": 6.21e-05,
+     "latencyMs": 8754,
+     "ok": true,
+     "text": "I\u2019m sorry you received a white webcam instead of the black one in order A-50764. I can help arrange the next steps for returning or exchanging it."
+    },
+    "candidate": {
+     "cost": 8.66e-05,
+     "latencyMs": 4936,
+     "ok": true,
+     "text": "I\u2019m sorry you received a white webcam instead of the black one you ordered in A-50764. Please send us a photo of the webcam and its packaging, and we\u2019ll look into the mix-up and help with the next steps."
+    },
+    "checks": [
+     {
+      "detail": "",
+      "pass": true,
+      "type": "regex",
+      "value": "\\bA-\\d{5}\\b"
+     },
+     {
+      "detail": "The answer acknowledges the wrong-color webcam in order A-50764 and gives a concrete next step (send photos) to resolve the mix-up.",
+      "pass": true,
+      "type": "judge",
+      "value": "The answer addresses the customer's question."
+     }
+    ],
+    "variables": {
+     "customer_message": "I ordered a black webcam in A-50764 and got a white one.",
+     "order_status": "delivered on 2026-10-03",
+     "product": "home electronics"
+    }
+   },
+   {
+    "baseline": {
+     "cost": 0.000125,
+     "latencyMs": 3641,
+     "ok": true,
+     "text": "I\u2019m sorry\u2014order A-51569 contained someone else\u2019s router. Please send us a photo of the router and the shipping label so we can investigate the mix-up and advise you on next steps."
+    },
+    "candidate": {
+     "cost": 6.15e-05,
+     "latencyMs": 7273,
+     "ok": true,
+     "text": "I\u2019m sorry you received someone else\u2019s router with order A-51569. Please send us a photo of the router and the shipping label, and we\u2019ll investigate and help resolve this."
+    },
+    "checks": [
+     {
+      "detail": "",
+      "pass": true,
+      "type": "regex",
+      "value": "\\bA-\\d{5}\\b"
+     },
+     {
+      "detail": "The answer directly responds to the customer's report of receiving the wrong router in order A-51569 by apologizing and outlining next steps to investigate and resolve it.",
+      "pass": true,
+      "type": "judge",
+      "value": "The answer addresses the customer's question."
+     }
+    ],
+    "variables": {
+     "customer_message": "Order A-51569 contained someone else's router.",
+     "order_status": "delivered on 2026-10-04",
+     "product": "home electronics"
+    }
+   },
+   {
+    "baseline": {
+     "cost": 0.0001153,
+     "latencyMs": 5471,
+     "ok": true,
+     "text": "I\u2019m sorry\u2014the cable in order A-49983 is USB-A, not the USB-C cable you ordered. I can help arrange a replacement or return; which would you prefer?"
+    },
+    "candidate": {
+     "cost": 9.23e-05,
+     "latencyMs": 25341,
+     "ok": true,
+     "text": "I\u2019m sorry you received a USB-A cable instead of the USB-C cable you ordered. Please send a photo of the cable and its packaging or label, and I\u2019ll help resolve this for order A-49983."
+    },
+    "checks": [
+     {
+      "detail": "",
+      "pass": true,
+      "type": "regex",
+      "value": "\\bA-\\d{5}\\b"
+     },
+     {
+      "detail": "The answer acknowledges the wrong cable type (USB-A instead of USB-C) for order A-49983 and moves toward a resolution by requesting a photo of the cable and packaging.",
+      "pass": true,
+      "type": "judge",
+      "value": "The answer addresses the customer's question."
+     }
+    ],
+    "variables": {
+     "customer_message": "The cable in order A-49983 is USB-A, but I ordered USB-C.",
+     "order_status": "delivered on 2026-09-29",
+     "product": "home electronics"
+    }
+   },
+   {
+    "baseline": {
+     "cost": 7.8e-05,
+     "latencyMs": 5031,
+     "ok": true,
+     "text": "I\u2019m sorry, Order A-52391 arrived with a 24-inch monitor instead of the 27-inch model you ordered. Please send us a photo of the monitor\u2019s model label and the shipping label so we can help resolve this."
+    },
+    "candidate": {
+     "cost": 7.65e-05,
+     "latencyMs": 3999,
+     "ok": true,
+     "text": "I\u2019m sorry you received a 24-inch monitor instead of the 27-inch model you ordered. Please send a photo of the monitor\u2019s model label and the shipping label, and we\u2019ll review order A-52391 and help resolve this."
+    },
+    "checks": [
+     {
+      "detail": "",
+      "pass": true,
+      "type": "regex",
+      "value": "\\bA-\\d{5}\\b"
+     },
+     {
+      "detail": "The answer acknowledges the wrong monitor size for order A-52391 and gives concrete next steps (photos of labels) toward resolving the issue.",
+      "pass": true,
+      "type": "judge",
+      "value": "The answer addresses the customer's question."
+     }
+    ],
+    "variables": {
+     "customer_message": "Order A-52391 came with a 24-inch monitor instead of the 27-inch one.",
+     "order_status": "delivered on 2026-10-06",
+     "product": "home electronics"
+    }
+   },
+   {
+    "baseline": {
+     "cost": 9.5e-05,
+     "latencyMs": 5756,
+     "ok": true,
+     "text": "I\u2019m sorry you received only one lamp from order A-50219, which is marked delivered on October 2, 2026. Please send us a photo of the packaging and packing slip so we can investigate the missing lamp."
+    },
+    "candidate": {
+     "cost": 0.0001225,
+     "latencyMs": 5651,
+     "ok": true,
+     "text": "I\u2019m sorry\u2014order A-50219 is marked delivered on October 2, but you received only one lamp. Please check your order details for a separate shipment or tracking number for the second lamp; if there isn\u2019t one, reply here and we\u2019ll investigate the missing item."
+    },
+    "checks": [
+     {
+      "detail": "",
+      "pass": true,
+      "type": "regex",
+      "value": "\\bA-\\d{5}\\b"
+     },
+     {
+      "detail": "The answer acknowledges the missing second lamp in order A-50219, suggests checking for a separate shipment, and offers to investigate if none exists.",
+      "pass": true,
+      "type": "judge",
+      "value": "The answer addresses the customer's question."
+     }
+    ],
+    "variables": {
+     "customer_message": "I only received one of the two lamps in order A-50219.",
+     "order_status": "delivered on 2026-10-02",
+     "product": "home electronics"
+    }
+   },
+   {
+    "baseline": {
+     "cost": 0.0001198,
+     "latencyMs": 13148,
+     "ok": true,
+     "text": "I\u2019m sorry the box for order A-51128 arrived crushed and the tablet won\u2019t turn on. Please send us photos of the box, tablet, and shipping label, and let us know whether you\u2019d prefer a replacement or return."
+    },
+    "candidate": {
+     "cost": 7.78e-05,
+     "latencyMs": 4661,
+     "ok": true,
+     "text": "I\u2019m sorry your order A-51128 arrived with a crushed box and a tablet that won\u2019t turn on. Please reply with photos of the damaged box, the tablet, and the shipping label so we can review the issue and help with next steps."
+    },
+    "checks": [
+     {
+      "detail": "",
+      "pass": true,
+      "type": "regex",
+      "value": "\\bA-\\d{5}\\b"
+     },
+     {
+      "detail": "The answer acknowledges the crushed box and the non-working tablet for order A-51128, and it gives concrete next steps by asking for photos so the issue can be reviewed.",
+      "pass": true,
+      "type": "judge",
+      "value": "The answer addresses the customer's question."
+     }
+    ],
+    "variables": {
+     "customer_message": "The box of order A-51128 was crushed and the tablet will not turn on.",
+     "order_status": "delivered on 2026-10-05",
+     "product": "home electronics"
+    }
+   },
+   {
+    "baseline": {
+     "cost": 7.63e-05,
+     "latencyMs": 5604,
+     "ok": true,
+     "text": "I\u2019m sorry the speaker grille on order A-49761 arrived dented. Please send us a photo of the damage so we can help with the next steps."
+    },
+    "candidate": {
+     "cost": 6.73e-05,
+     "latencyMs": 4069,
+     "ok": true,
+     "text": "I\u2019m sorry your order A-49761 arrived with a dented speaker grille. Please send us a photo of the damage, and we\u2019ll review the available options to help resolve this."
+    },
+    "checks": [
+     {
+      "detail": "",
+      "pass": true,
+      "type": "regex",
+      "value": "\\bA-\\d{5}\\b"
+     },
+     {
+      "detail": "The answer acknowledges the dented speaker grille on order A-49761 and responds with a concrete next step (sending a photo) toward resolving it.",
+      "pass": true,
+      "type": "judge",
+      "value": "The answer addresses the customer's question."
+     }
+    ],
+    "variables": {
+     "customer_message": "Order A-49761 arrived with a dented speaker grille.",
+     "order_status": "delivered on 2026-09-30",
+     "product": "home electronics"
+    }
+   },
+   {
+    "baseline": {
+     "cost": 8.15e-05,
+     "latencyMs": 3441,
+     "ok": true,
+     "text": "I\u2019m sorry the power bank from order A-52906 is getting very hot. Stop using and charging it, unplug it if safe, and keep it away from flammable materials. Please contact us to arrange an inspection or return."
+    },
+    "candidate": {
+     "cost": 7.15e-05,
+     "latencyMs": 4242,
+     "ok": true,
+     "text": "I\u2019m sorry the power bank is overheating. Unplug it and stop using or charging it; keep it away from flammable materials, and don\u2019t handle it if it\u2019s swollen, smoking, or leaking. Please contact our support team with order A-52906 so we can help with next steps."
+    },
+    "checks": [
+     {
+      "detail": "",
+      "pass": true,
+      "type": "regex",
+      "value": "\\bA-\\d{5}\\b"
+     },
+     {
+      "detail": "The answer directly responds to the overheating power bank from order A-52906 with safety instructions and next steps for contacting support.",
+      "pass": true,
+      "type": "judge",
+      "value": "The answer addresses the customer's question."
+     }
+    ],
+    "variables": {
+     "customer_message": "The power bank from order A-52906 gets very hot while charging.",
+     "order_status": "delivered on 2026-10-01",
+     "product": "home electronics"
+    }
+   },
+   {
+    "baseline": {
+     "cost": 0.0001064,
+     "latencyMs": 4366,
+     "ok": true,
+     "text": "I\u2019m sorry the laptop stand\u2019s hinge is broken. For order A-50642, please send us a photo of the damage and let us know whether you\u2019d prefer a replacement or a return so we can help with the next steps."
+    },
+    "candidate": {
+     "cost": 6.44e-05,
+     "latencyMs": 5739,
+     "ok": true,
+     "text": "I\u2019m sorry your laptop stand arrived with a broken hinge. Please send us a photo of the damage, and we\u2019ll review the available options for your order A-50642."
+    },
+    "checks": [
+     {
+      "detail": "",
+      "pass": true,
+      "type": "regex",
+      "value": "\\bA-\\d{5}\\b"
+     },
+     {
+      "detail": "The answer acknowledges the broken hinge on the laptop stand from order A-50642 and gives a concrete next step (send a photo) toward resolving it.",
+      "pass": true,
+      "type": "judge",
+      "value": "The answer addresses the customer's question."
+     }
+    ],
+    "variables": {
+     "customer_message": "My laptop stand from order A-50642 has a broken hinge.",
+     "order_status": "delivered on 2026-09-28",
+     "product": "home electronics"
+    }
+   },
+   {
+    "baseline": {
+     "cost": 0.0001204,
+     "latencyMs": 4049,
+     "ok": true,
+     "text": "I\u2019m sorry order A-53047 arrived wet and the earbuds case was stained. Please send photos of the packaging, shipping label, and case so we can review the damage and advise you on next steps. If you return it, any refund goes to your original payment method once the return has been checked."
+    },
+    "candidate": {
+     "cost": 5.89e-05,
+     "latencyMs": 3691,
+     "ok": true,
+     "text": "I\u2019m sorry your order A-53047 arrived wet and the earbuds case is stained. Please send us photos of the case and the wet packaging so we can review the damage and help with next steps."
+    },
+    "checks": [
+     {
+      "detail": "",
+      "pass": true,
+      "type": "regex",
+      "value": "\\bA-\\d{5}\\b"
+     },
+     {
+      "detail": "The answer acknowledges the wet delivery and stained earbuds case for order A-53047 and gives a concrete next step by asking for photos to review the damage.",
+      "pass": true,
+      "type": "judge",
+      "value": "The answer addresses the customer's question."
+     }
+    ],
+    "variables": {
+     "customer_message": "Order A-53047 arrived wet and the earbuds case is stained.",
+     "order_status": "delivered on 2026-10-06",
+     "product": "home electronics"
+    }
+   },
+   {
+    "baseline": {
+     "cost": 0.0001618,
+     "latencyMs": 8549,
+     "ok": true,
+     "text": "I\u2019m sorry order A-51483 was delivered by standard post despite your express shipping payment. We\u2019ll review the shipping service used and the express charge for this order."
+    },
+    "candidate": {
+     "cost": 9.43e-05,
+     "latencyMs": 4724,
+     "ok": true,
+     "text": "I\u2019m sorry order A-51483 arrived by standard post even though you paid for express shipping. I\u2019ll review the shipping details and express-shipping charge to determine the appropriate resolution."
+    },
+    "checks": [
+     {
+      "detail": "",
+      "pass": true,
+      "type": "regex",
+      "value": "\\bA-\\d{5}\\b"
+     },
+     {
+      "detail": "The answer acknowledges the customer's complaint about order A-51483 being sent by standard post despite paying for express, and says it will review the shipping charge to resolve it.",
+      "pass": true,
+      "type": "judge",
+      "value": "The answer addresses the customer's question."
+     }
+    ],
+    "variables": {
+     "customer_message": "I paid for express shipping on order A-51483 but it came by standard post.",
+     "order_status": "delivered on 2026-10-03",
+     "product": "home electronics"
+    }
+   },
+   {
+    "baseline": {
+     "cost": 0.0001032,
+     "latencyMs": 4087,
+     "ok": true,
+     "text": "Sorry about the price discrepancy on order A-50037. Please share the checkout total shown and the amount charged so we can review the difference."
+    },
+    "candidate": {
+     "cost": 6.82e-05,
+     "latencyMs": 3876,
+     "ok": true,
+     "text": "I\u2019m sorry you were charged more than the price shown at checkout. I can help investigate\u2014please share the amount displayed at checkout and the amount charged, along with a screenshot or copy of your order confirmation if available."
+    },
+    "checks": [
+     {
+      "detail": "",
+      "pass": false,
+      "type": "regex",
+      "value": "\\bA-\\d{5}\\b"
+     },
+     {
+      "detail": "The answer directly engages with the customer's complaint about the price discrepancy, apologizes, and asks for the specific details needed to investigate.",
+      "pass": true,
+      "type": "judge",
+      "value": "The answer addresses the customer's question."
+     }
+    ],
+    "variables": {
+     "customer_message": "Order A-50037 was charged at a higher price than the checkout page showed.",
+     "order_status": "delivered on 2026-09-25",
+     "product": "home electronics"
+    }
+   },
+   {
+    "baseline": {
+     "cost": 9.73e-05,
+     "latencyMs": 4165,
+     "ok": true,
+     "text": "Order A-52564 is processing and hasn\u2019t shipped yet. I\u2019m sorry your discount code wasn\u2019t applied; please send the code so we can check whether it can still be added."
+    },
+    "candidate": {
+     "cost": 8.53e-05,
+     "latencyMs": 3625,
+     "ok": true,
+     "text": "I\u2019m sorry the discount wasn\u2019t applied to order A-52564. Since it\u2019s still processing, please send us the discount code so we can check whether it can be applied to your order."
+    },
+    "checks": [
+     {
+      "detail": "",
+      "pass": true,
+      "type": "regex",
+      "value": "\\bA-\\d{5}\\b"
+     },
+     {
+      "detail": "The answer acknowledges the missing discount on order A-52564 and gives a concrete next step, asking for the code so it can be checked and applied while the order is still processing.",
+      "pass": true,
+      "type": "judge",
+      "value": "The answer addresses the customer's question."
+     }
+    ],
+    "variables": {
+     "customer_message": "My discount code was not applied to order A-52564.",
+     "order_status": "processing, not shipped",
+     "product": "home electronics"
+    }
+   },
+   {
+    "baseline": {
+     "cost": 0.0001027,
+     "latencyMs": 4657,
+     "ok": true,
+     "text": "Order A-49405 is marked delivered on 2026-09-22, but I can\u2019t tell from the status why VAT appears twice. Please send us an itemized invoice or screenshot of the charges so we can check whether VAT was duplicated."
+    },
+    "candidate": {
+     "cost": 0.0001172,
+     "latencyMs": 5924,
+     "ok": true,
+     "text": "Sorry for the confusion. I can\u2019t confirm from the delivery status alone whether VAT was charged twice; it may be listed by item and again in the order summary, though it should only be included once in the total. Please share the invoice or a screenshot of the VAT breakdown for order A-49405, with payment details hidden, and I can help check it."
+    },
+    "checks": [
+     {
+      "detail": "",
+      "pass": true,
+      "type": "regex",
+      "value": "\\bA-\\d{5}\\b"
+     },
+     {
+      "detail": "The answer directly engages with the VAT double-charge question on order A-49405, offering a possible explanation (itemized plus summary listing) and asking for the invoice to verify, even though it can't confirm the cause.",
+      "pass": true,
+      "type": "judge",
+      "value": "The answer addresses the customer's question."
+     }
+    ],
+    "variables": {
+     "customer_message": "Why was VAT added twice on order A-49405?",
+     "order_status": "delivered on 2026-09-22",
+     "product": "home electronics"
+    }
+   },
+   {
+    "baseline": {
+     "cost": 0.0001389,
+     "latencyMs": 7426,
+     "ok": true,
+     "text": "I\u2019m sorry your card was charged after order A-52112 was cancelled on 2026-10-04. Any refund will go to your original payment method once the return has been checked."
+    },
+    "candidate": {
+     "cost": 0.0001359,
+     "latencyMs": 7176,
+     "ok": true,
+     "text": "I\u2019m sorry you were charged after cancelling order A-52112. If the transaction is still pending, it may be a card authorization; if it has posted, please contact our support team through the secure help channel so we can review the payment. Please don\u2019t send your full card number."
+    },
+    "checks": [
+     {
+      "detail": "",
+      "pass": true,
+      "type": "regex",
+      "value": "\\bA-\\d{5}\\b"
+     },
+     {
+      "detail": "The answer directly addresses the customer's concern about being charged after cancelling order A-52112, explaining a possible pending authorization and giving next steps if the charge has posted.",
+      "pass": true,
+      "type": "judge",
+      "value": "The answer addresses the customer's question."
+     }
+    ],
+    "variables": {
+     "customer_message": "I cancelled order A-52112 but my card was still charged.",
+     "order_status": "cancelled on 2026-10-04",
+     "product": "home electronics"
+    }
+   }
+  ]
+ },
+ "rows": 40,
+ "set_id": 3,
+ "set_name": "support-answer: orders (40 rows)",
+ "status": "finished",
+ "updated_at": "2026-10-19T17:04:18Z"
+}
